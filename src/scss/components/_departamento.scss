@@ -8,25 +8,19 @@
   }
 
   .grid-one {
-    display: grid;
+    display:inline;
     grid-template-columns: 2fr 1fr;
     gap: 1rem;
-    height: 40%;
+    height: 70%;
     .top__card {
       @include getCardStyles;
+      position: center;
+
+      .container_table{
+        margin-top: 2%;
+      }
     }
     @include getMonthlyFollowersStyles;
     margin-bottom: 1rem;
-  }
-
-  .grid-two {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 1rem;
-    height: 40%;
-
-    @include getTrendingTracksStyles;
-    @include getTrendingUsersStyles;
-    @include getUserActivityStyles;
   }
 }
