@@ -6,28 +6,40 @@ import 'antd/dist/antd.css';
 const data = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
+    departamento: 'John Brown',
+    fecha: 32,
+    editar: <button>Ingresar</button>,
   },
   {
     key: '2',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
+    departamento: 'Joe Black',
+    fecha: 42,
+    editar: <button>Ingresar</button>,
   },
   {
     key: '3',
-    name: 'Jim Green',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
+    departamento: 'Joe Black',
+    fecha: 42,
+    editar: <button>Ingresar</button>,
   },
   {
     key: '4',
-    name: 'Jim Red',
-    age: 32,
-    address: 'London No. 2 Lake Park',
+    departamento: 'Joe Black',
+    fecha: 42,
+    editar: <button>Ingresar</button>,
   },
+  {
+    key: '5',
+    departamento: 'Joe Black',
+    fecha: 42,
+    editar: <button>Ingresar</button>,
+  },
+  {
+    key: '6',
+    departamento: 'Joe Black',
+    fecha: 42,
+    editar: <button>Ingresar</button>,
+  }
 ];
 
 const App = () => {
@@ -133,24 +145,24 @@ const App = () => {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Departamento',
+      dataIndex: 'departamento',
+      key: 'departamento',
+      width: '50%',
+      ...getColumnSearchProps('departamento'),
+    },
+    {
+      title: 'Fecha Creacion',
+      dataIndex: 'fecha',
+      key: 'fecha',
       width: '30%',
-      ...getColumnSearchProps('name'),
+      ...getColumnSearchProps('fecha'),
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-      width: '20%',
-      ...getColumnSearchProps('age'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-      ...getColumnSearchProps('address'),
+      title: 'Editar',
+      dataIndex: 'editar',
+      key: 'editar',
+      ...getColumnSearchProps('editar'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
     },

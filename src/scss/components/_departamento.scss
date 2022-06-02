@@ -16,8 +16,25 @@
       @include getCardStyles;
       position: center;
 
+      .container_top{
+        display: inline;
+
+        .container_text{
+          display: flex;
+          text-align: left;
+          float: left;
+        }
+
+        .container_button{
+          display: flex;
+          text-align: right;
+          float: right;
+        }
+      }
+      
+
       .container_table{
-        margin-top: 2%;
+        margin-top: 4%;
       }
     }
     @include getMonthlyFollowersStyles;
