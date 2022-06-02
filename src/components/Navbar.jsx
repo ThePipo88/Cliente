@@ -1,10 +1,13 @@
 import React from "react";
 import avatar from "../assets/avatarImage.jpeg";
 
-function Navbar() {
+function Navbar(props) {
+  
+  const name = props.name;
+
   return (
     <div className="navbar">
-      <h1>Overview</h1>
+      <h1>{name}</h1>
       <div className="info">
         <h4>kishan@groove.music</h4>
         <div className="avatar">

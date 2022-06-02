@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes, Link, Switch } from "react-rout
 import routes from './config/routes';
 import { BrowserRouter } from 'react-router-dom';
 
-import "./scss/Styles.scss";
 
 function App() {
   return (

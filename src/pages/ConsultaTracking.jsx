@@ -10,7 +10,7 @@ import UserActivity from "../components/UserActivity";
 function ConsultaTracking() {
   return (
     <div className="metrics">
-      <Navbar />
+      <Navbar name = "Consulta Tracking"/>
       <div className="grid-one">
         <DailyMetric />
         <MusicMetric />

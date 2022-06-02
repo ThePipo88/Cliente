@@ -1,5 +1,6 @@
 //Layout
 import LayoutAdmin from "../layouts/LayoutAdmin";
+import LayoutLogin from "../layouts/LayoutLogin";
 
 //Admin Pages
 import Casos from '../pages/Casos';
@@ -7,6 +8,7 @@ import Departamentos from "../pages/Departamentos";
 import ConsultaTracking from "../pages/ConsultaTracking";
 import Parametros from "../pages/Parametros";
 import Tramites from "../pages/Tramites";
+import Login from "../pages/Login";
 
 
 const routesAdmin = [
@@ -43,6 +45,15 @@ const routesAdmin = [
     }
 ];
 
-const routes = [...routesAdmin];
+const routesLogin = [
+
+    {
+        path: "/login",
+        layout: LayoutLogin,
+        component: Login,
+    }
+];
+
+const routes = [...routesAdmin, ...routesLogin];
 
 export default routes;

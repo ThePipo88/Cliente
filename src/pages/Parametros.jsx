@@ -10,7 +10,7 @@ import UserActivity from "../components/UserActivity";
 function Parametros() {
   return (
     <div className="metrics">
-      <Navbar />
+      <Navbar name = "Parametros"/>
       <div className="grid-one">
         <DailyMetric />
         <MusicMetric />

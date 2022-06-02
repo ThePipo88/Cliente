@@ -1,6 +1,5 @@
 import Metrics from "../components/Metrics";
 import Sidebar from "../components/Sidebar";
-
 import "../scss/Styles.scss";
 
 function LayoutAdmin(props) {

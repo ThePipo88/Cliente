@@ -8,9 +8,10 @@ import MusicMetric from "../components/MusicMetric";
 import UserActivity from "../components/UserActivity";
 
 function Casos() {
+  
   return (
     <div className="metrics">
-      <Navbar />
+      <Navbar name = "Casos"/>
       <div className="grid-one">
         <DailyMetric />
         <MusicMetric />

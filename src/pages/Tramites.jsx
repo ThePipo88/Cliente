@@ -10,7 +10,7 @@ import UserActivity from "../components/UserActivity";
 function Tramites() {
   return (
     <div className="metrics">
-      <Navbar />
+      <Navbar name = "Tramites"/>
       <div className="grid-one">
         <DailyMetric />
         <MusicMetric />
