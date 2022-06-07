@@ -1,4 +1,3 @@
-import Metrics from "../components/Metrics";
 import Sidebar from "../components/Sidebar";
 import { Layout } from 'antd';
 import "../scss/Styles.scss";

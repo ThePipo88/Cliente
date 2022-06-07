@@ -5,6 +5,7 @@ import LayoutLogin from "../layouts/LayoutLogin";
 //Admin Pages
 import Casos from '../pages/Casos';
 import Departamentos from "../pages/Departamentos";
+import EditarDepartamentos from "../pages/EditarDepartamento";
 import ConsultaTracking from "../pages/ConsultaTracking";
 import Parametros from "../pages/Parametros";
 import Tramites from "../pages/Tramites";
@@ -22,6 +23,11 @@ const routesAdmin = [
         path: "/admin/departamentos",
         layout: LayoutAdmin,
         component: Departamentos,
+    },
+    {
+        path: "/admin/departamentos/editar",
+        layout: LayoutAdmin,
+        component: EditarDepartamentos,
     },
     {
         path: "/admin/consulta",

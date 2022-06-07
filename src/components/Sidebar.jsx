@@ -5,7 +5,12 @@ import { HiMusicNote } from "react-icons/hi";
 import { FiUsers, FiSettings } from "react-icons/fi";
 import { SiHomeassistant,SiFiles, SiOpenstreetmap, SiGooglesearchconsole } from "react-icons/si";
 import Logo from "../assets/logo.png";
-import Player from "./Player";
+import { IoLogOut } from "react-icons/io5";
+
+const myData = {
+  name: 'Some thing',
+  price: 123
+}
 
 function Sidebar() {
   return (
@@ -24,7 +29,7 @@ function Sidebar() {
             </li>
             <li>
               <SiFiles />
-              <Link to={"/admin/tramites"}>
+              <Link to="/admin/tramites" state={myData}>
                  <span className='nav-text'>Tramites</span>
                 </Link>
             </li>
@@ -51,7 +56,18 @@ function Sidebar() {
       </div>
       <div className="lower__container">
         <div className="music__container">
-          <Player />
+        <div className="player">
+      <div className="link_sing_up">
+          <ul>
+            <li className="active">
+              <IoLogOut />
+              <Link to={"/login"}>
+                 <span className='nav-text'>Cerrar Sesion</span>
+                </Link>
+            </li>
+          </ul>
+        </div>
+       </div>
         </div>
       </div>
     </div>
