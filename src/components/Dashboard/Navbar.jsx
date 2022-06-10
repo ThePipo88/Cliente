@@ -1,5 +1,5 @@
 import React from "react";
-import avatar from "../assets/avatarImage.jpeg";
+import avatar from "../../assets/avatarImage.jpeg";
 
 function Navbar(props) {
   

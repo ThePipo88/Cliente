@@ -15,6 +15,11 @@ import Login from "../pages/Login";
 const routesAdmin = [
 
     {
+        path: "/",
+        layout: LayoutAdmin,
+        component: Casos,
+    },
+    {
         path: "/admin",
         layout: LayoutAdmin,
         component: Casos,
