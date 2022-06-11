@@ -10,6 +10,9 @@ import ConsultaTracking from "../pages/ConsultaTracking";
 import Parametros from "../pages/Parametros";
 import Tramites from "../pages/Tramites";
 import Login from "../pages/Login";
+import SingLogin from "../pages/SingIn";
+import RegisterForm from "../components/Login/RegisterForm";
+
 
 
 const routesAdmin = [
@@ -57,6 +60,11 @@ const routesLogin = [
         path: "/login",
         layout: LayoutLogin,
         component: Login,
+    },
+    {
+        path: "/singIn",
+        layout: LayoutLogin,
+        component: SingLogin,
     }
 ];
 

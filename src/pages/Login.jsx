@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Grid, Container, Paper, Avatar, Typography, TextField, Button, CssBaseline } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Layout, Tabs } from "antd";
 import fondo from '../assets/fondo.png';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
 
 
 function Login() {
+
+	const { Content } = Layout;
 
     const [body, setBody] = useState({ nickname: '', password: '' })
 
@@ -25,8 +27,10 @@ function Login() {
 	}
 
     return (
-        <Grid container component='main' className="root">
+		
+        <Layout className="root">
 			<CssBaseline />
+			<Content className="log-in__content">
 			<Container component={Paper} elevation={5} maxWidth='xs' className="container_lg">
 				<div className={"div_lg"}>
 					<Avatar className="avatar_lg">
@@ -56,6 +60,7 @@ function Login() {
 							value={body.password}
 							onChange={handleChange}
 						/>
+						
 						<Button
 							fullWidth
 							variant='contained'
@@ -64,10 +69,13 @@ function Login() {
 						>
 							Inisiar Sesion
 						</Button>
+						<Link to="/singIn"> <div className='nav-text'> <span>¿No tienes cuenta? Create una ahora!</span></div>
+                </Link>
 					</form>
 				</div>
 			</Container>
-		</Grid>
+			</Content>
+		</Layout>
     )
 }
 

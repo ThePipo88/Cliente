@@ -1,9 +1,9 @@
-.root{
+.root-sing-in{
     background-repeat: no-repeat;
     background-position: center  center;
     background-size: cover;
 
-    .log-in__content{
+    .sign-in__content{
         background-image: radial-gradient(
         circle 1000.6px at 50% 50%,
         rgb(26, 0, 61) 30%,
@@ -35,6 +35,13 @@
                 width: 100%;
                 margin-top: 10%;
                 margin-bottom: 5%;
+
+                .div_form{
+                    display: grid;
+                    grid-template-columns: 195px 5px 200px;
+                    grid-template-rows: auto;
+                    
+                }
             }
             button{
                 margin-top: 8%;
