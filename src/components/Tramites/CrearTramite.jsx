@@ -45,7 +45,7 @@ const App = (mostrar) => {
         </button>
 
     <Modal
-        title="Nuevo Departamento"
+        title="Nuevo Tramite"
         centered
         visible={visible}
         onOk={() => setVisible(false)}
