@@ -1,6 +1,6 @@
 import React from "react";
 
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Dashboard/Navbar";
 import Departamento from "../components/Departamentos/Departamento";
 import { Alert } from 'antd';
 import { useState } from "react";

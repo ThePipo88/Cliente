@@ -18,6 +18,11 @@ import RegisterForm from "../components/Login/RegisterForm";
 const routesAdmin = [
 
     {
+        path: "/",
+        layout: LayoutAdmin,
+        component: Casos,
+    },
+    {
         path: "/admin",
         layout: LayoutAdmin,
         component: Casos,

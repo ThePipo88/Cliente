@@ -1,8 +1,9 @@
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Dashboard/Sidebar";
 import "../scss/Styles.scss";
 import ScrollBars  from 'react-custom-scrollbars';
 
 function LayoutAdmin(props) {
+  
    const { children } = props;
   return (
     <div className="dashboard">

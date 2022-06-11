@@ -1,7 +1,7 @@
 import React from "react";
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { useLocation } from 'react-router-dom';
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Dashboard/Navbar";
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
 import { Alert, Form, Input, Button, Select, DatePicker } from 'antd';
