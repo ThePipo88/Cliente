@@ -24,11 +24,13 @@ const App = () => {
     {
       key: '1',
       tramite: 'Contratacion Laboral',
+      departamento:'Recursos Humanos',
       editarTramite: <button className='button-37'></button>,
     },
     {
       key: '2',
       tramite: 'Concurso Limpieza',
+      departamento:'Recursos Humanos',
       editarTramite: <button className='button-37'></button>,
     }
   ];
@@ -134,12 +136,16 @@ const App = () => {
       title: 'Tramite',
       dataIndex: 'tramite',
       key: 'tramite',
-      width: '75%',
+      width: '50%',
       ...getColumnSearchProps('tramite'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
     },
-    
+    {
+      title: 'Departamento',
+      dataIndex: 'departamento',
+      key: 'departamento'
+    },
     {
       title: 'Editar Tramite',
       dataIndex: 'editarTramite',

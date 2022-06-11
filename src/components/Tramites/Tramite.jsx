@@ -1,6 +1,7 @@
 import React from "react";
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import TablaTramite from "./TablaTramite"
+import CrearTramite from "./CrearTramite"
 
 
 function Tramite(props){
@@ -20,7 +21,7 @@ function Tramite(props){
       </div>
 
       <div className="container_button">
-      
+      <CrearTramite mostrar={mostrarSms}/>
       </div>
       </div>
       <ResponsiveContainer width="100%" height="100%">
