@@ -12,6 +12,7 @@ import Tramites from "../pages/Tramites";
 import Login from "../pages/Login";
 import SingLogin from "../pages/SingIn";
 import RegisterForm from "../components/Login/RegisterForm";
+import EditarTramites from "../pages/EditarTramite";
 
 
 
@@ -56,6 +57,11 @@ const routesAdmin = [
         path: "/admin/casos",
         layout: LayoutAdmin,
         component: Casos,
+    },
+    {
+        path: "/admin/tramites/editartramites",
+        layout: LayoutAdmin,
+        component: EditarTramites,
     }
 ];
 
