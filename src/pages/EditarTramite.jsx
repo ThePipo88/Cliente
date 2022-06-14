@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar from "../components/Dashboard/Navbar";
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
-import { Alert, Form, Input, Button, Select, DatePicker } from 'antd';
+import { Alert, Form, Input, Button, Select, DatePicker, Dropdown, Menu } from 'antd';
 import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined, SolutionOutlined} from '@ant-design/icons';
 import { useState } from "react";
 import swal from 'sweetalert';
@@ -59,6 +59,9 @@ function EditarTramite(props){
 
     const handleNameChange = (newName)=>{
         setShowAlert(newName);
+    };
+    const handleChange = (value) => {
+        console.log(`selected ${value}`);
     };
 
     return(
@@ -145,6 +148,24 @@ function EditarTramite(props){
             <div className="grid-users">
                 <div className="bootom__users">
                 <h3>Ciclo</h3>
+                <div style={{padding: "15px"}}>
+                <Select
+                    defaultValue="1"
+                    style={{
+                        width: 120,
+                    }}
+                    onChange={handleChange}
+                    >
+                    <Option value="1">1</Option>
+                    <Option value="2">2</Option>
+                    <Option value="3">3</Option>
+                    <Option value="4">4</Option>
+                </Select>
+                <button type="primary" className="button-62" style={{backgroundColor: '#983ADE', color:"White",border:'#983ADE', borderRadius: "4px",fontSize: "15px"}}>
+                    Agregar  
+                </button>
+                </div>
+                
                 <ResponsiveContainer width="100%" height="100%">
                 <div className="container_table">
                     <TablaCiclos/>
