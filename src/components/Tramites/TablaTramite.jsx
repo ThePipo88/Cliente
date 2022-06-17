@@ -13,11 +13,11 @@ const App = () => {
   const navigate = useNavigate();
 
   const myData = {
-    name: 'Recursos Humanos'
+    name: 'Tramites'
   }
 
-  const editarDepartamento = () => {
-    navigate("/admin/departamentos/editar", {state:{myData}});
+  const editarTramite = () => {
+    navigate("/admin/tramites/editartramites", {state:{myData}});
   }
 
   const data = [
@@ -25,7 +25,7 @@ const App = () => {
       key: '1',
       tramite: 'Contratacion Laboral',
       departamento:'Recursos Humanos',
-      editarTramite: <button className='button-37'></button>,
+      editarTramite: <button className='button-37' onClick={() => editarTramite()} ></button>,
     },
     {
       key: '2',
