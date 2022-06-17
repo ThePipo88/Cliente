@@ -5,13 +5,15 @@ import { Layout, Tabs, Checkbox } from "antd";
 import fondo from '../assets/fondo.png';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
 import { FontSizeOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
+import axios from "axios";
 
 
 function SingIn() {
 
 	const { Content } = Layout;
 
-    const [body, setBody] = useState({ nickname: '', password: '' })
+    const [body, setBody] = useState({ nombre: '', descripcion: '', tipoOrganizacion: '', correo: '', contrasena: '' , repContra: ''})
 
 	const navigate = useNavigate();
 
@@ -23,9 +25,82 @@ function SingIn() {
 	}
 
 	const onSubmit = () => {
-		console.log(body);
-		navigate("/login");
+		if(body.nombre != '' && body.descripcion != '' && body.tipoOrganizacion != '' && body.correo != '' && body.contrasena != '' && body.repContra != ''){
+
+			const user = {
+				nombre_org: body.nombre,
+                descripcion_org: body.descripcion,
+                tipo_org: body.tipoOrganizacion,
+                correo_org: body.correo,
+			}
+
+			axios.post('http://localhost:3977/api/v1/crearOrganizacion',user)
+            .then(({data}) => {
+
+				registraUsuario(data.user.nombre_org, body.contrasena, data.user._id);
+
+				Swal.fire(
+					'¡Organizacion registrada con exito!',
+					'Se redireccionara a el login para iniciar sesion',
+					'success'
+				  ).then((result) => {
+				      navigate("/login");
+				})
+            }).catch(({response}) => {
+
+				if(response.status == "500"){
+					Swal.fire({
+						title: 'Organizacion o correo ingresado ya existentes',
+						icon: 'warning',
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Aceptar'
+					  }).then((result) => {
+						
+					  })
+				}else if(response.status == "500"){
+					Swal.fire({
+						title: 'Se produjo un error',
+						icon: 'warning',
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Aceptar'
+					  }).then((result) => {
+						
+					  })
+				}
+               })
+		}else{
+			Swal.fire({
+				title: 'Faltan datos por ingresar',
+				icon: 'warning',
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Aceptar'
+			  }).then((result) => {
+				
+			  })
+		}
 	}
+
+
+	function registraUsuario(nomb, contra, orgId){
+
+		const user = {
+			nombre_usuario: nomb,
+            rol: 'Administrador',
+            contrasena: contra,
+            organizacion_id: orgId
+		}
+
+		axios.post('http://localhost:3977/api/v1/registrar/usuario',user)
+            .then(({data}) => {
+
+            }).catch(({response}) => {
+				
+            })
+	}
+	
 
     return (
 		
@@ -47,8 +122,8 @@ function SingIn() {
 							margin='normal'
 							variant='outlined'
 							label='Nombre Organizacion'
-							name='nickname'
-							value={body.nickname}
+							name='nombre'
+							value={body.nombre}
 							onChange={handleChange}
                             inputProps = {{style: {fontSize: 14}}}
 						/>
@@ -61,8 +136,8 @@ function SingIn() {
 							margin='normal'
 							variant='outlined'
 							label='Descripcion'
-							name='nickname'
-							value={body.nickname}
+							name='descripcion'
+							value={body.descripcion}
 							onChange={handleChange}
                             inputProps = {{style: {fontSize: 14}}}
 						/>
@@ -75,8 +150,8 @@ function SingIn() {
 							margin='normal'
 							variant='outlined'
 							label='Tipo organizacion'
-							name='nickname'
-							value={body.nickname}
+							name='tipoOrganizacion'
+							value={body.tipoOrganizacion}
 							onChange={handleChange}
                             inputProps = {{style: {fontSize: 14}}}
 						/>
@@ -89,8 +164,8 @@ function SingIn() {
 							margin='normal'
 							variant='outlined'
 							label='Correo'
-							name='nickname'
-							value={body.nickname}
+							name='correo'
+							value={body.correo}
 							onChange={handleChange}
                             inputProps = {{style: {fontSize: 14}}}
 						/>
@@ -103,8 +178,8 @@ function SingIn() {
 							margin='normal'
 							variant='outlined'
 							label='Contraseña'
-							name='password'
-							value={body.password}
+							name='contrasena'
+							value={body.contrasena}
 							onChange={handleChange}
                             inputProps = {{style: {fontSize: 14}}}
 						/>
@@ -117,8 +192,8 @@ function SingIn() {
 							margin='normal'
 							variant='outlined'
 							label='Repetir contraseña'
-							name='password'
-							value={body.password}
+							name='repContra'
+							value={body.repContra}
 							onChange={handleChange}
                             inputProps = {{style: {fontSize: 14}}}
 						/>

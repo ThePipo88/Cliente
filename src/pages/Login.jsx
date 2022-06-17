@@ -4,6 +4,8 @@ import { Grid, Container, Paper, Avatar, Typography, TextField, Button, CssBasel
 import { Layout, Tabs } from "antd";
 import fondo from '../assets/fondo.png';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
+import Swal from 'sweetalert2';
+import axios from "axios";
 
 
 function Login() {
@@ -22,8 +24,34 @@ function Login() {
 	}
 
 	const onSubmit = () => {
-		console.log(body);
-		navigate("/admin");
+
+		axios.get('http://localhost:3977/api/v1/obtener/usuario/login/'+body.nickname+'/'+body.password)
+		.then(({data}) => {
+			navigate("/admin");
+		}).catch(({response}) => {
+
+			if(response.status == "500"){
+				Swal.fire({
+					title: 'Usuario o contraseña incorrectas',
+					icon: 'warning',
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar'
+				  }).then((result) => {
+					
+				  })
+			}else if(response.status == "400"){
+				Swal.fire({
+					title: 'Se produjo un error',
+					icon: 'warning',
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar'
+				  }).then((result) => {
+					
+				  })
+			}
+		   })
 	}
 
     return (
