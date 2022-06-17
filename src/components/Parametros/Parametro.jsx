@@ -5,7 +5,7 @@ import Navbar from "../Dashboard/Navbar";
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
 import { Alert, Form, Input, Button, Select, DatePicker } from 'antd';
-import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined, SolutionOutlined} from '@ant-design/icons';
+import { UserOutlined, AuditOutlined, SettingOutlined,SolutionOutlined, PictureOutlined, AlignCenterOutlined,GoogleOutlined,CaretDownOutlined,LockOutlined} from '@ant-design/icons';
 import { useState } from "react";
 import swal from 'sweetalert';
 
@@ -115,7 +115,7 @@ function Parametro(props){
           },
         ]}
       >
-        <Input size="large" placeholder="Logo" onChange={(e) => setLogoP(e.target.value)} prefix={<BankOutlined />} />
+        <Input size="large" placeholder="Logo" onChange={(e) => setLogoP(e.target.value)} prefix={<PictureOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -139,7 +139,7 @@ function Parametro(props){
           },
         ]}
       >
-        <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<PhoneOutlined />} />
+        <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AlignCenterOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -151,7 +151,7 @@ function Parametro(props){
           },
         ]}
       >
-        <Input size="large" placeholder="Correo electronico" onChange={(e) => setCorreo(e.target.value)} prefix={<CommentOutlined />} />
+        <Input size="large" placeholder="Correo electronico" onChange={(e) => setCorreo(e.target.value)} prefix={<GoogleOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -163,7 +163,7 @@ function Parametro(props){
           },
         ]}
       >
-        <Input size="large" placeholder="Tipo" onChange={(e) => setTipo(e.target.value)} prefix={<CommentOutlined />} />
+        <Input size="large" placeholder="Tipo" onChange={(e) => setTipo(e.target.value)} prefix={<CaretDownOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -217,13 +217,13 @@ function Parametro(props){
           },
         ]}
       >
-        <Input size="large" placeholder="Rol" onChange={(e) => setRol(e.target.value)} prefix={<AuditOutlined />} />
+        <Input size="large" placeholder="Rol" onChange={(e) => setRol(e.target.value)} prefix={<SettingOutlined />} />
       </Form.Item>
 
       <Form.Item
         name="contrasena"
       >
-        <Input size="large" placeholder="Contrasena" onChange={(e) => setContrasena(e.target.value)} prefix={<SolutionOutlined />} />
+        <Input size="large" placeholder="Contrasena" onChange={(e) => setContrasena(e.target.value)} prefix={<LockOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -232,8 +232,8 @@ function Parametro(props){
           span: 10,
         }}
       >
-        <button type="primary" className="button-63">
-          Registrar empleado
+        <button type="primary" className="button-63" >
+          Registrar Usuario Administrador
         </button>
       </Form.Item>
     </Form>

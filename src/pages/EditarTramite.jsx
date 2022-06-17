@@ -5,7 +5,7 @@ import Navbar from "../components/Dashboard/Navbar";
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
 import { Alert, Form, Input, Button, Select, DatePicker, Dropdown, Menu } from 'antd';
-import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined, SolutionOutlined} from '@ant-design/icons';
+import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
 import { useState } from "react";
 import swal from 'sweetalert';
 import TablaDocumentos from "../components/Tramites/TablaDocumentos";
@@ -95,7 +95,7 @@ function EditarTramite(props){
                             },
                             ]}
                         >
-                            <Input size="large" placeholder="Nombre del tramite" onChange={(e) => setNombreTra(e.target.value)} prefix={<BankOutlined />} />
+                            <Input size="large" placeholder="Nombre del tramite" onChange={(e) => setNombreTra(e.target.value)} prefix={<ContainerOutlined />} />
                         </Form.Item>
 
                         <Form.Item
@@ -107,7 +107,7 @@ function EditarTramite(props){
                             },
                             ]}
                         >
-                            <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AuditOutlined />} />
+                            <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AlignCenterOutlined />} />
                         </Form.Item>
 
                         <Form.Item
@@ -119,7 +119,7 @@ function EditarTramite(props){
                             },
                             ]}
                         >
-                            <Input size="large" placeholder="Departamento a Asignar" onChange={(e) => setDepartamentoAsig(e.target.value)} prefix={<PhoneOutlined />} />
+                            <Input size="large" placeholder="Departamento a Asignar" onChange={(e) => setDepartamentoAsig(e.target.value)} prefix={<HomeOutlined />} />
                         </Form.Item>
                         <Form.Item
                             wrapperCol={{
