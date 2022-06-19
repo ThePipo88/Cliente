@@ -1,11 +1,11 @@
 import React from "react";
-
+import { useLocation } from 'react-router-dom';
 import Navbar from "../components/Dashboard/Navbar";
-import Parametro from "../components/Parametros/Parametro";
-import { Alert } from 'antd';
+import Tramite from "../components/Tramites/Tramite"
 import { useState } from "react";
 
-function Parametros() {
+
+function VerConsulta(props) {
 
   const [showAlert, setShowAlert] = useState(false);
 
@@ -15,12 +15,9 @@ function Parametros() {
 
   return (
     <div className="metrics">
-      <Navbar name = "Parametros"/>
-      <div className="grid-one">
-      <Parametro/>
-      </div>
+      
     </div>
   );
 }
 
-export default Parametros;
+export default VerConsulta;
