@@ -97,43 +97,6 @@
             padding: 10px 30px;
           }
         }
-
-        .button-33 {
-          background: url('../../assets/lupa.png') no-repeat center center;
-          background-size: 28px 28px;
-          background-color: #983ADE ;
-          border: 1px solid #983ADE;
-          border-radius: 4px;
-          box-shadow: rgba(0, 0, 0, .1) 0 1px 2px 0;
-          box-sizing: border-box;
-          color: #fff;
-          cursor: pointer;
-          font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
-          font-size: 20px;
-          font-weight: 200;
-          outline: none;
-          outline: 0;
-          padding: 5px 20px;
-          text-align: center;
-          transform: translateY(0);
-          transition: transform 100ms, box-shadow 100ms;
-          user-select: none;
-          -webkit-user-select: none;
-          touch-action: manipulation;
-        }
-        
-        .button-33:hover {
-          box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
-          transform: translateY(-2px);
-        }
-        
-        @media (min-width: 768px) {
-          .button-33 {
-            padding: 10px 30px;
-          }
-        }
-
-
       }
     }
 
