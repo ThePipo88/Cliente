@@ -34,7 +34,7 @@ function SingIn() {
                 correo_org: body.correo,
 			}
 
-			axios.post('http://localhost:3977/api/v1/organizacion/crearOrganizacion',user)
+			axios.post('http://localhost:3977/api/v1/crearOrganizacion',user)
             .then(({data}) => {
 
 				registraUsuario(data.user.nombre_org, body.contrasena, data.user._id);

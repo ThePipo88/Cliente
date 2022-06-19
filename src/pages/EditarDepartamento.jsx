@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React from "react";
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { useLocation } from 'react-router-dom';
 import Navbar from "../components/Dashboard/Navbar";
@@ -6,10 +6,9 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
 import { Alert, Form, Input, Button, Select, DatePicker } from 'antd';
 import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined, SolutionOutlined} from '@ant-design/icons';
+import { useState } from "react";
 import swal from 'sweetalert';
-import Swal from 'sweetalert2';
 import TablaEmpleados from "../components/Departamentos/TablaEmpleados";
-import axios from "axios";
 
 const { Option } = Select;
 
@@ -17,40 +16,17 @@ function EditarDepartamento(props) {
 
   const location = useLocation();
   const data = location.state;
+  console.log(data.myData.name);
 
 const [showAlert, setShowAlert] = useState(false);
 
 const nombre = "Departamentos > "+ data.myData.name;
 
-//Actualizar datos en el sistema
-
-useEffect(() => {
-  return () => {
-    (async () => {
-      axios.get('http://localhost:3977/api/v1/departamento/obtener/'+data.myData.id_dep)
-      .then(({data}) => {
-
-        body.departamento = data.user.nombre_dep;
-        body.descripcion = data.user.descripcion_dep;
-        body.telefono = data.user.tel_dep;
-        body.correoElectronico = data.user.correo_dep;
-
-        cargarForm();
-
-
-      }).catch(({response}) => {
-
-     })
-    }
-    )();
-  }
-},[]);
-
 //Variables para actualizar departamento
 
 const [visible, setVisible] = useState(false);
 
-  const [nombreD, setNombreDep] = useState();
+  const [nombreD, setNombreDep] = useState('');
 
   const [descripcion, setDescripcion] = useState('');
 
@@ -58,27 +34,12 @@ const [visible, setVisible] = useState(false);
 
   const [correo, setCorreo] = useState('');
 
-  const [body, setBody] = useState({ departamento: '', Descripcion: '', telefono: '', correoElectronico: '', tipoEmpleado:''})
-
-	const handleChange = e => {
-		setBody({
-			...body,
-			[e.target.name]: e.target.value
-		})
-	}
-
-  const onChangeFecha = (value) => {
-    setFechaNac(value);
+  const onChangeJefe = (value) => {
+    console.log(`selected ${value}`);
   };
   
-  const onChangeJefe = (value) => {
-    /*console.log(`selected ${value}`);*/
-    body.tipoEmpleado = value;
-  };
-
   const onSearch = (value) => {
     console.log('search:', value);
-
   };
 
     const actualizarDepartamento = (values) => {
@@ -93,60 +54,38 @@ const [visible, setVisible] = useState(false);
 
     };
 
-
-    const onChangeEmpleado = (value) => {
-      setTipoEmp(value);
-    };
-
    const [form] = Form.useForm();
-
-   const cargarForm = () => {
-    form.setFieldsValue({departamento: body.departamento, descripcion: body.descripcion, telefono: body.telefono, correoElectronico: body.correoElectronico});
-  }
 
    //Variables para agregar empleados
    const registrarUsuario = (values) => {
-
-    const user = {
-      nombre_emp: nombreE,
-      apellidos_emp: apellidos,
-      cedula_emp: cedula,
-      fecNacimiento_emp: fechaNac,
-      tipoEmpleado: tipoEmp,
-      id_departamento: data.myData.id_dep
-    }
-
-    axios.post('http://localhost:3977/api/v1/empleados/registrar/empleados', user)
-      .then(({data}) => {
-
-        setTimeout(() => {
-          swal({
-              title: "Felicidades",
-              text: "Infromacion de departamento actualizada",
-              icon: "success",
-              button: "Aceptar"
-          }).then((result) => {
-            window.location.reload();
-          })
-
-      },200)
-
-      }).catch(({response}) => {
-
-    })
+    setTimeout(() => {
+        swal({
+            title: "Felicidades",
+            text: "Infromacion de departamento actualizada",
+            icon: "success",
+            button: "Aceptar"
+        });
+    },200)
   };
 
   const [nombreE, setNombreEmp] = useState('');
 
-  const [apellidos, setApellidos] = useState('');
+  const [primerAp, setPrimerAp] = useState('');
 
-  const [cedula, setCedula] = useState('');
+  const [segundoAp, setSegundoAp] = useState('');
 
   const [fechaNac, setFechaNac] = useState('');
 
-  const [tipoEmp, setTipoEmp] = useState('');
+  const onChangeEmpleado = (value) => {
+    console.log(`selected ${value}`);
+  };
 
    const [form2] = Form.useForm();
+
+  const resetearForm = () => {
+    form.resetFields();
+    setVisible(false);
+  }
 
 const handleNameChange = (newName)=>{
   setShowAlert(newName);
@@ -183,11 +122,11 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Nombre del departamento" prefix={<BankOutlined />} />
+        <Input size="large" placeholder="Nombre del departamento" onChange={(e) => setNombreDep(e.target.value)} prefix={<BankOutlined />} />
       </Form.Item>
 
       <Form.Item
-        name="descripcion"
+        name="Descripcion"
         rules={[
           {
             required: true,
@@ -195,7 +134,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Descripcion" onChange={handleChange} prefix={<AuditOutlined />} />
+        <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AuditOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -207,7 +146,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Telefono" onChange={handleChange} prefix={<PhoneOutlined />} />
+        <Input size="large" placeholder="Telefono" onChange={(e) => setTelefono(e.target.value)} prefix={<PhoneOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -219,7 +158,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Correo electronico" onChange={handleChange} prefix={<CommentOutlined />} />
+        <Input size="large" placeholder="Correo electronico" onChange={(e) => setCorreo(e.target.value)} prefix={<CommentOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -279,11 +218,11 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Nombre del empleado" onChange={event => setNombreEmp(event.target.value)}prefix={<UserOutlined />} />
+        <Input size="large" placeholder="Nombre del empleado" onChange={(e) => setNombreEmp(e.target.value)} prefix={<UserOutlined />} />
       </Form.Item>
 
       <Form.Item
-        name="PrimerApellido"
+        name="Primerapellido"
         rules={[
           {
             required: true,
@@ -291,13 +230,13 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Apellidos" onChange={event => setApellidos(event.target.value)} prefix={<AuditOutlined />} />
+        <Input size="large" placeholder="Primer apellido" onChange={(e) => setPrimerAp(e.target.value)} prefix={<AuditOutlined />} />
       </Form.Item>
 
       <Form.Item
         name="SegundoApellido"
       >
-        <Input size="large" placeholder="Cedula" onChange={event => setCedula(event.target.value)} prefix={<SolutionOutlined />} />
+        <Input size="large" placeholder="Segundo apellido" onChange={(e) => setSegundoAp(e.target.value)} prefix={<SolutionOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -309,7 +248,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <DatePicker onChange={onChangeFecha} placeholder="Fecha de nacimiento" style={{ width: '100%' }}  />
+        <DatePicker onChange={onChangeJefe} placeholder="Fecha de nacimiento" style={{ width: '100%' }}  />
       </Form.Item>
 
       <Form.Item
@@ -354,7 +293,7 @@ const handleNameChange = (newName)=>{
        <h3>Empleados del departamento</h3>
        <ResponsiveContainer width="100%" height="100%">
          <div className="container_table">
-         <TablaEmpleados id_dep = {data.myData.id_dep}/>
+         <TablaEmpleados/>
          </div>
       </ResponsiveContainer>
        </div>
