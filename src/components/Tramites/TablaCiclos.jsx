@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Table, Input, Button, Space } from 'antd';
-import Highlighter from 'react-highlight-words';
+import {Highlighter} from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
 import 'antd/dist/antd.min.css';

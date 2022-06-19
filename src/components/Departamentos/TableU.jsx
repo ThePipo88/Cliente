@@ -5,7 +5,6 @@ import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
 import 'antd/dist/antd.min.css';
 import Swal from 'sweetalert2';
-import swal from 'sweetalert';
 import axios from "axios";
 import Cookies from "universal-cookie";
 
@@ -28,7 +27,6 @@ const App = () => {
   const [dataSource, setDataSource] = useState([
 
   ]);
-
 
   useEffect(() => {
     return () => {

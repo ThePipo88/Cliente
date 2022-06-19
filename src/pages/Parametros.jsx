@@ -17,7 +17,7 @@ function Parametros() {
     <div className="metrics">
       <Navbar name = "Parametros"/>
       <div className="grid-one">
-      <Parametro nameChange={handleNameChange}/>
+      <Parametro/>
       </div>
     </div>
   );
