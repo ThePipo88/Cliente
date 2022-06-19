@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Modal, Button, Input, Form, Alert  } from 'antd';
-import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined} from '@ant-design/icons';
+import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
 import { message } from 'antd';
 import swal from 'sweetalert';
 
@@ -77,7 +77,7 @@ const App = (mostrar) => {
           },
         ]}
       >
-        <Input size="large" placeholder="Nombre del tramite" onChange={(e) => setNombre(e.target.value)} prefix={<BankOutlined />} />
+        <Input size="large" placeholder="Nombre del tramite" onChange={(e) => setNombre(e.target.value)} prefix={<ContainerOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -89,7 +89,7 @@ const App = (mostrar) => {
           },
         ]}
       >
-        <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AuditOutlined />} />
+        <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AlignCenterOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -101,7 +101,7 @@ const App = (mostrar) => {
           },
         ]}
       >
-        <Input size="large" placeholder="Departamento a asignar" onChange={(e) => setDepartamentoAginar(e.target.value)} prefix={<PhoneOutlined />} />
+        <Input size="large" placeholder="Departamento a asignar" onChange={(e) => setDepartamentoAginar(e.target.value)} prefix={<HomeOutlined />} />
       </Form.Item>
 
       <Form.Item
