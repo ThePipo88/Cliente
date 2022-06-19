@@ -1,17 +1,52 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
+import axios from "axios";
 import 'antd/dist/antd.min.css';
 
-const App = () => {
+const App = (props) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   const navigate = useNavigate();
 
+  const [dataSource, setDataSource] = useState([
+
+  ]);
+
+
+  useEffect(() => {
+    return () => {
+      (async () => {
+        axios.get('http://localhost:3977/api/v1/empleados/obtener/empleadosPorDepartamento/'+props.id_dep)
+        .then(({data}) => {
+
+          for(let i = 0; i < data.user.length; i++){   
+            const newUser = {
+            key: i,
+            id: data.user[i]._id,
+            nombre: data.user[i].nombre_emp,
+            apellidos: data.user[i].apellidos_emp,
+            cedula: data.user[i].cedula_emp,
+            puesto: data.user[i].tipoEmpleado,
+            editar: <button className='button-37' onClick={() => editarDepartamento(newUser.id)}></button>,
+            };
+            setDataSource((pre) => {
+              return [...pre, newUser];
+            });
+        }
+
+        }).catch(({response}) => {
+  
+       })
+      }
+      )();
+    }
+  },[]);
+  
   const myData = {
     name: 'Recursos Humanos'
   }
@@ -19,57 +54,6 @@ const App = () => {
   const editarDepartamento = () => {
     navigate("/admin/departamentos/editar", {state:{myData}});
   }
-
-  const data = [
-    {
-      key: '1',
-      nombre: 'John Brown',
-      primerA: 32,
-      segundoA: 32,
-      puesto: 32,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '2',
-      nombre: 'John Brown',
-      primerA: 32,
-      segundoA: 32,
-      puesto: 32,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '3',
-      nombre: 'John Brown',
-      primerA: 32,
-      segundoA: 32,
-      puesto: 32,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '4',
-      nombre: 'John Brown',
-      primerA: 32,
-      segundoA: 32,
-      puesto: 32,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '5',
-      nombre: 'John Brown',
-      primerA: 32,
-      segundoA: 32,
-      puesto: 32,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '6',
-      nombre: 'John Brown',
-      primerA: 32,
-      segundoA: 32,
-      puesto: 32,
-      editar: <button className='button-37'></button>,
-    }
-  ];
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -178,18 +162,18 @@ const App = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Primer apellido',
-      dataIndex: 'primerA',
-      key: 'primerA',
+      title: 'Apellidos',
+      dataIndex: 'apellidos',
+      key: 'apellidos',
       width: '20%',
-      ...getColumnSearchProps('primerA'),
+      ...getColumnSearchProps('apellidos'),
     },
     {
-      title: 'Segundo apellido',
-      dataIndex: 'segundoA',
-      key: 'segundoA',
+      title: 'Cedula',
+      dataIndex: 'cedula',
+      key: 'cedula',
       width: '20%',
-      ...getColumnSearchProps('segundoA'),
+      ...getColumnSearchProps('cedula'),
     },
     {
       title: 'Puesto',
@@ -204,7 +188,7 @@ const App = () => {
       key: 'editar',
     },
   ];
-  return <Table columns={columns} dataSource={data} />;
+  return <Table columns={columns} dataSource={dataSource} />;
 };
 
 export default App;

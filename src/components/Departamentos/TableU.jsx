@@ -1,9 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
 import 'antd/dist/antd.min.css';
+import Swal from 'sweetalert2';
+import swal from 'sweetalert';
+import axios from "axios";
+import Cookies from "universal-cookie";
 
 const App = () => {
   const [searchText, setSearchText] = useState('');
@@ -12,52 +16,73 @@ const App = () => {
 
   const navigate = useNavigate();
 
-  const myData = {
-    name: 'Recursos Humanos'
-  }
 
-  const editarDepartamento = () => {
+  const editarDepartamento = (id, nombre) => {
+    const myData = {
+      name: nombre,
+      id_dep: id
+    }
     navigate("/admin/departamentos/editar", {state:{myData}});
   }
 
-  const data = [
-    {
-      key: '1',
-      departamento: 'John Brown',
-      fecha: 32,
-      editar: <button className='button-37' onClick={() => editarDepartamento()}></button>,
-    },
-    {
-      key: '2',
-      departamento: 'Joe Black',
-      fecha: 42,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '3',
-      departamento: 'Joe Black',
-      fecha: 42,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '4',
-      departamento: 'Joe Black',
-      fecha: 42,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '5',
-      departamento: 'Joe Black',
-      fecha: 42,
-      editar: <button className='button-37'></button>,
-    },
-    {
-      key: '6',
-      departamento: 'Joe Black',
-      fecha: 42,
-      editar: <button className='button-37'></button>,
+  const [dataSource, setDataSource] = useState([
+
+  ]);
+
+
+  useEffect(() => {
+    return () => {
+      actualizarTabla();
     }
-  ];
+  },[]);
+
+  async function actualizarTabla(){
+    (async () => {
+      axios.get('http://localhost:3977/api/v1/departamento/getAll')
+      .then(({data}) => {
+
+        for(let i = 0; i < data.user.length; i++){   
+            const newStudent = {
+            key: i,
+            id: data.user[i]._id,
+            departamento: data.user[i].nombre_dep,
+            correo: data.user[i].correo_dep,
+            editar: <button className='button-37' onClick={() => editarDepartamento(newStudent.id, newStudent.departamento)}></button>,
+            };
+            setDataSource((pre) => {
+              return [...pre, newStudent];
+            });
+        }
+
+  
+      }).catch(({response}) => {
+
+  if(response.status == "500"){
+    Swal.fire({
+      title: 'Organizacion o correo ingresado ya existentes',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then((result) => {
+      
+      })
+  }else if(response.status == "500"){
+    Swal.fire({
+      title: 'Se produjo un error',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then((result) => {
+      
+      })
+  }
+})
+    })();
+
+  }
+
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -166,11 +191,11 @@ const App = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Fecha Creacion',
-      dataIndex: 'fecha',
-      key: 'fecha',
+      title: 'Correo electronico',
+      dataIndex: 'correo',
+      key: 'correo',
       width: '30%',
-      ...getColumnSearchProps('fecha'),
+      ...getColumnSearchProps('correo'),
     },
     {
       title: 'Editar',
@@ -178,7 +203,7 @@ const App = () => {
       key: 'editar',
     },
   ];
-  return <Table columns={columns} dataSource={data} />;
+  return <Table columns={columns} dataSource={dataSource} />;
 };
 
 export default App;

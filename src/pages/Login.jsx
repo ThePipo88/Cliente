@@ -6,6 +6,7 @@ import fondo from '../assets/fondo.png';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
 import Swal from 'sweetalert2';
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 
 function Login() {
@@ -25,9 +26,20 @@ function Login() {
 
 	const onSubmit = () => {
 
-		axios.get('http://localhost:3977/api/v1/obtener/usuario/login/'+body.nickname+'/'+body.password)
+		if(body.nickname != '' && body.password != ''){
+
+			axios.get('http://localhost:3977/api/v1/usuarios/obtener/usuario/login/'+body.nickname+'/'+body.password)
 		.then(({data}) => {
+
+
+			const cookies = new Cookies();
+
+			cookies.set('nombreUsuario', data.user[0].nombre_usuario, {path: '/'});
+            cookies.set('contrasena', data.user[0].contrasena, {path: '/'});
+			cookies.set('organizacion_id', data.user[0].organizacion_id, {path: '/'});
+
 			navigate("/admin");
+
 		}).catch(({response}) => {
 
 			if(response.status == "500"){
@@ -52,6 +64,18 @@ function Login() {
 				  })
 			}
 		   })
+
+		}else{
+			Swal.fire({
+				title: 'Faltan campos por ingresar',
+				icon: 'warning',
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Aceptar'
+			  }).then((result) => {
+				
+			  })
+		}
 	}
 
     return (
