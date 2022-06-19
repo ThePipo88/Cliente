@@ -24,12 +24,14 @@ const App = () => {
     {
       key: '1',
       tramite: 'Contratacion Laboral',
+      descripcion:'Se requiere programador junior',
       departamento:'Recursos Humanos',
       editarTramite: <button className='button-37' onClick={() => editarTramite()} ></button>,
     },
     {
       key: '2',
       tramite: 'Concurso Limpieza',
+      descripcion:'Se requiere limpiar el lote de la oficina',
       departamento:'Recursos Humanos',
       editarTramite: <button className='button-37'></button>,
     }
@@ -136,15 +138,22 @@ const App = () => {
       title: 'Tramite',
       dataIndex: 'tramite',
       key: 'tramite',
-      width: '50%',
+      width: '30%',
       ...getColumnSearchProps('tramite'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'Descripcion',
+      dataIndex: 'descripcion',
+      key: 'descripcion',
+      width: '40%',
+    },
+    {
       title: 'Departamento',
       dataIndex: 'departamento',
-      key: 'departamento'
+      key: 'departamento',
+      width: '20%',
     },
     {
       title: 'Editar Tramite',
