@@ -1,14 +1,16 @@
 import React from "react";
 
 import Navbar from "../components/Dashboard/Navbar";
-import Departamento from "../components/Departamentos/Departamento";
+import Caso from "../components/Casos/Caso";
 
 function Casos() {
   
   return (
     <div className="metrics">
       <Navbar name = "Casos"/>
-      <h1>Hola</h1>
+      <div className="grid-one">
+        <Caso/>
+      </div>
     </div>
   );
 }
