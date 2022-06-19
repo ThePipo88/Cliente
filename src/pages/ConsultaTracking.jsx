@@ -1,23 +1,13 @@
 import React from "react";
 
 import Navbar from "../components/Dashboard/Navbar";
-import ConsultaT from "../components/Consulta/ConsultaT";
-import { useState } from "react";
-
 
 function ConsultaTracking() {
-
-  const [showAlert, setShowAlert] = useState(false);
-
-  const handleNameChange = (newName)=>{
-    setShowAlert(newName);
-  };
-
   return (
     <div className="metrics">
-      <Navbar name = "Consulta"/>
+      <Navbar name = "Consulta Tracking"/>
       <div className="grid-one">
-        <ConsultaT nameChange={handleNameChange}/>
+
       </div>
     </div>
   );
