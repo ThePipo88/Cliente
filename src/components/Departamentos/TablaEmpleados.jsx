@@ -3,6 +3,7 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
+import ActualizarEmpleado from '../Departamentos/ActualizarEmpleado';
 import axios from "axios";
 import 'antd/dist/antd.min.css';
 
@@ -31,8 +32,9 @@ const App = (props) => {
             nombre: data.user[i].nombre_emp,
             apellidos: data.user[i].apellidos_emp,
             cedula: data.user[i].cedula_emp,
+            fecha: data.user[i].fecNacimiento_emp,
             puesto: data.user[i].tipoEmpleado,
-            editar: <button className='button-37' onClick={() => editarDepartamento(newUser.id)}></button>,
+            editar: <ActualizarEmpleado idU={data.user[i]._id} nombreU={data.user[i].nombre_emp} apellidosU={data.user[i].apellidos_emp} cedulaU={data.user[i].cedula_emp} fechaU={data.user[i].fecNacimiento_emp} puestoU={data.user[i].tipoEmpleado}/>,
             };
             setDataSource((pre) => {
               return [...pre, newUser];
@@ -51,8 +53,12 @@ const App = (props) => {
     name: 'Recursos Humanos'
   }
 
-  const editarDepartamento = () => {
-    navigate("/admin/departamentos/editar", {state:{myData}});
+  function editarDepartamento(id){
+    console.log("Se metio en la vara");
+    //navigate("/admin/departamentos/editar", {state:{myData}});
+    return(
+      <ActualizarEmpleado/>
+    );
   }
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
