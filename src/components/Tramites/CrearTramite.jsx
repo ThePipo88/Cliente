@@ -3,6 +3,8 @@ import { Modal, Button, Input, Form, Alert  } from 'antd';
 import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
 import { message } from 'antd';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
+import axios from "axios";
 
 const App = (mostrar) => {
 
@@ -15,21 +17,58 @@ const App = (mostrar) => {
     const [departamentoAsinar, setDepartamentoAginar] = useState('');
 
     const onFinish = (values) => {
-        if(nombre != '' && descripcion != '' && departamentoAsinar != ''){
-            setVisible(false);
-            form.resetFields();
-            setTimeout(() => {
-                swal({
-                    title: "Felicidades",
-                    text: "Tramite agregado con exito",
-                    icon: "success",
-                    button: "Aceptar"
-                });
-            },200)
-        }else{
-        
+      if(nombre != '' && descripcion != '' && departamentoAsinar != ''){
+
+
+        const user = {
+          tipo_tra: nombre,
+          departamento_id: departamentoAsinar,
+          descripcion_tra: descripcion,
         }
-    };
+    
+        axios.post('http://localhost:3977/api/v1/tramites/registrartramites',user)
+                .then(({data}) => {
+
+
+          setVisible(false);
+          form.resetFields();
+              swal({
+                  title: "Felicidades",
+                  text: "Tramite registrado con exito",
+                  icon: "success",
+                  button: "Aceptar",
+              }).then((result) => {
+                window.location.reload();
+              })
+              
+                }).catch(({response}) => {
+    
+            if(response.status == "500"){
+              Swal.fire({
+                title: 'Tramite ya existentes',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                
+                })
+            }else if(response.status == "500"){
+              Swal.fire({
+                title: 'Se produjo un error',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                
+                })
+            }
+          })
+      }else{
+      
+      }
+  };
 
     const [form] = Form.useForm();
 
