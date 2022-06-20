@@ -14,6 +14,7 @@ import SingLogin from "../pages/SingIn";
 import RegisterForm from "../components/Login/RegisterForm";
 import EditarTramites from "../pages/EditarTramite";
 import VerConsulta from "../pages/VerConsulta";
+import EditarCiclo from "../components/Tramites/EditarCiclo";
 
 
 
@@ -68,6 +69,11 @@ const routesAdmin = [
         path: "/admin/consulta/verconsulta",
         layout: LayoutAdmin,
         component: VerConsulta,
+    },
+    {
+        path: "/admin/tramites/editarciclo",
+        layout: LayoutAdmin,
+        component: EditarCiclo,
     }
 ];
 
