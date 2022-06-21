@@ -15,6 +15,8 @@ const App = () => {
 
   const navigate = useNavigate();
 
+  const cookies = new Cookies();
+
 
   const editarDepartamento = (id, nombre) => {
     const myData = {
@@ -36,7 +38,7 @@ const App = () => {
 
   async function actualizarTabla(){
     (async () => {
-      axios.get('http://localhost:3977/api/v1/departamento/getAll')
+      axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+ cookies.get('organizacion_id'))
       .then(({data}) => {
 
         for(let i = 0; i < data.user.length; i++){   

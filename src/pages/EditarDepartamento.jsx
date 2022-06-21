@@ -15,6 +15,7 @@ const { Option } = Select;
 function EditarDepartamento(props) {
 
   const location = useLocation();
+
   const data = location.state;
 
 const [showAlert, setShowAlert] = useState(false);
@@ -58,6 +59,12 @@ const [body, setBody] = useState({ departamento: '', descripcion: '', telefono: 
 
   const [form2] = Form.useForm();
 
+  //Cargar los empleados en el select
+  const [emp, setEmp] = useState([
+
+  ]);
+
+
 //Actualizar datos en el sistema
 
 useEffect(() => {
@@ -70,6 +77,7 @@ useEffect(() => {
         body.descripcion = data.user.descripcion_dep;
         body.telefono = data.user.tel_dep;
         body.correoElectronico = data.user.correo_dep;
+        body.jefeDepa = data.user.jefe_dep;
 
         setNombDepT(body.departamento);
 
@@ -80,6 +88,27 @@ useEffect(() => {
 
      })
     }
+    )();
+
+    (
+      async () => {
+        axios.get('http://localhost:3977/api/v1/empleados/obtener/empleadosPorDepartamento/'+data.myData.id_dep)
+        .then(({data}) => {
+
+          for(let i = 0; i < data.user.length; i++){   
+            const newUser = {
+            key: i,
+            nombre: data.user[i].nombre_emp +' '+data.user[i].apellidos_emp,
+            };
+            setEmp((pre) => {
+              return [...pre, newUser];
+            });
+        }
+
+        }).catch(({response}) => {
+  
+       })
+      }
     )();
   }
 },[]);
@@ -142,7 +171,12 @@ useEffect(() => {
    const [form] = Form.useForm();
 
    const cargarForm = () => {
-    form.setFieldsValue({departamento: body.departamento, descripcion: body.descripcion, telefono: body.telefono, correoElectronico: body.correoElectronico});
+    if(body.jefeDepa != ''){
+      form.setFieldsValue({departamento: body.departamento, jefeDepartamento: body.jefeDepa, descripcion: body.descripcion, telefono: body.telefono, correoElectronico: body.correoElectronico});
+    }else{
+      form.setFieldsValue({departamento: body.departamento, descripcion: body.descripcion, telefono: body.telefono, correoElectronico: body.correoElectronico});
+    }
+    
   }
 
    //Variables para agregar empleados
@@ -258,11 +292,8 @@ useEffect(() => {
         onChange={onChangeJefe}
         onSearch={onSearch}
         prefix={<CommentOutlined />}
-        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
       >
-        <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-        <Option value="tom">Tom</Option>
+        {emp.map((user)=> <Option key={user.key} value={user.nombre}/>) }
       </Select>
       </Form.Item>
 
