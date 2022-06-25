@@ -6,6 +6,7 @@ import { message } from 'antd';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 const { Option } = Select;
 
@@ -26,13 +27,16 @@ const App = (mostrar) => {
     ]);
     const data = location.state;
 
+    const cookies = new Cookies();
+
+    
 
 
     useEffect(() => {
       return () => {
         (
           async () => {
-            axios.get('http://localhost:3977/api/v1/departamento/getAll/')
+            axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+cookies.get('organizacion_id'))
             .then(({data}) => {
     
               for(let i = 0; i < data.user.length; i++){   
