@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from 'react';
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { useLocation } from 'react-router-dom';
 import Navbar from "../components/Dashboard/Navbar";
@@ -6,7 +6,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
 import { Alert, Form, Input, Button, Select, DatePicker, Dropdown, Menu } from 'antd';
 import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
-import { useState } from "react";
 import swal from 'sweetalert';
 import TablaDocumentos from "../components/Tramites/TablaDocumentos";
 import TablaCiclos from "../components/Tramites/TablaCiclos";
@@ -24,11 +23,28 @@ function EditarTramite(props){
     //Variables para actualizar Tramite
     const [visible, setVisible] = useState(false);
 
-    const [nombreT, setNombreTra] = useState('');
+    //const [nombreT, setNombreTra] = useState('');
 
-    const [descripcion, setDescripcion] = useState('');
+    //const [descripcion, setDescripcion] = useState('');
 
-    const [departamnetoAsig, setDepartamentoAsig] = useState('');
+    //const [departamnetoAsig, setDepartamentoAsig] = useState('');
+
+
+    const [body, setBody] = useState({ nombreT: '', descripcion: '', departamnetoAsig: ''})
+
+	const handleChange = (e,name) => {
+
+    if(name == "nombreT"){
+      body.nombreT = e.target.value;
+    } 
+    else if(name == "descripcion"){
+      body.descripcion = e.target.value;
+    }
+    else if(name == "departamnetoAsig"){
+      body.departamnetoAsig = e.target.value;
+    }
+	}
+
 
     const onChangeJefe = (value) => {
         console.log(`selected ${value}`);
@@ -60,9 +76,7 @@ function EditarTramite(props){
     const handleNameChange = (newName)=>{
         setShowAlert(newName);
     };
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    };
+    
 
     return(
         <div className="metrics">
@@ -95,7 +109,7 @@ function EditarTramite(props){
                             },
                             ]}
                         >
-                            <Input size="large" placeholder="Nombre del tramite" onChange={(e) => setNombreTra(e.target.value)} prefix={<ContainerOutlined />} />
+                            <Input size="large" placeholder="Nombre del tramite" onChange={e => handleChange(e,"nombreT")} prefix={<ContainerOutlined />} />
                         </Form.Item>
 
                         <Form.Item
@@ -107,7 +121,7 @@ function EditarTramite(props){
                             },
                             ]}
                         >
-                            <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AlignCenterOutlined />} />
+                            <Input size="large" placeholder="Descripcion" onChange={e => handleChange(e,"descripcion")} prefix={<AlignCenterOutlined />} />
                         </Form.Item>
 
                         <Form.Item
@@ -119,7 +133,7 @@ function EditarTramite(props){
                             },
                             ]}
                         >
-                            <Input size="large" placeholder="Departamento a Asignar" onChange={(e) => setDepartamentoAsig(e.target.value)} prefix={<HomeOutlined />} />
+                            <Input size="large" placeholder="Departamento a Asignar" onChange={e => handleChange(e,"departamnetoAsig")} prefix={<HomeOutlined />} />
                         </Form.Item>
                         <Form.Item
                             wrapperCol={{
