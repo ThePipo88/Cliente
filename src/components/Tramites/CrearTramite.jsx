@@ -1,12 +1,17 @@
-import React, {useState} from "react";
-import { Modal, Button, Input, Form, Alert  } from 'antd';
+import React, {useState, useEffect} from "react";
+import { Modal, Button, Input, Form, Alert, Select  } from 'antd';
+import { useLocation } from 'react-router-dom';
 import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
 import { message } from 'antd';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 import axios from "axios";
 
+const { Option } = Select;
+
 const App = (mostrar) => {
+
+  const location = useLocation();
 
     const [visible, setVisible] = useState(false);
 
@@ -15,6 +20,38 @@ const App = (mostrar) => {
     const [descripcion, setDescripcion] = useState('');
 
     const [departamentoAsinar, setDepartamentoAginar] = useState('');
+
+    const [dep, setDep] = useState([
+
+    ]);
+    const data = location.state;
+
+
+
+    useEffect(() => {
+      return () => {
+        (
+          async () => {
+            axios.get('http://localhost:3977/api/v1/departamento/getAll/')
+            .then(({data}) => {
+    
+              for(let i = 0; i < data.user.length; i++){   
+                const newDep = {
+                key: i,
+                nombre: data.user[i].nombre_dep,
+                };
+                setDep((pre) => {
+                  return [...pre, newDep];
+                });
+            }
+    
+            }).catch(({response}) => {
+      
+           })
+          }
+        )();
+    }
+    },[]);
 
     const onFinish = (values) => {
       if(nombre != '' && descripcion != '' && departamentoAsinar != ''){
@@ -77,6 +114,15 @@ const App = (mostrar) => {
         setVisible(false);
     }
 
+
+    const onChangeDepartamento = (value) => {
+      setDepartamentoAginar(value);
+    };
+  
+    const onSearch = (value) => {
+      console.log('search:', value);
+    };
+
     return(
     <>
         <button className='button-62' onClick={() => setVisible(true)}>
@@ -132,15 +178,18 @@ const App = (mostrar) => {
       </Form.Item>
 
       <Form.Item
-        name="departamentoAsinar"
-        rules={[
-          {
-            required: true,
-            message: 'El numero de nombre del departamento a asignar es requerido',
-          },
-        ]}
+      name="departamentoAsinar"
+    >
+       <Select
+        showSearch
+        placeholder="Departamento a Asignar"
+        optionFilterProp="children"
+        onChange={onChangeDepartamento}
+        onSearch={onSearch}
+        prefix={<HomeOutlined />}
       >
-        <Input size="large" placeholder="Departamento a asignar" onChange={(e) => setDepartamentoAginar(e.target.value)} prefix={<HomeOutlined />} />
+      {dep.map((user)=> <Option key={user.key} value={user.nombre}/>) }
+      </Select>
       </Form.Item>
 
       <Form.Item
