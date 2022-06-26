@@ -6,6 +6,7 @@ import LayoutLogin from "../layouts/LayoutLogin";
 import Casos from '../pages/Casos';
 import Departamentos from "../pages/Departamentos";
 import EditarDepartamentos from "../pages/EditarDepartamento";
+import TramitesPorDepartamento from "../pages/TramitesPorDepartamento";
 import ConsultaTracking from "../pages/ConsultaTracking";
 import Parametros from "../pages/Parametros";
 import Tramites from "../pages/Tramites";
@@ -14,9 +15,7 @@ import SingLogin from "../pages/SingIn";
 import RegisterForm from "../components/Login/RegisterForm";
 import EditarTramites from "../pages/EditarTramite";
 import VerConsulta from "../pages/VerConsulta";
-import EditarCiclo from "../components/Tramites/EditarCiclo";
-
-
+//Ver porque no sirve la ruto de tramites por departamento
 
 const routesAdmin = [
 
@@ -61,6 +60,11 @@ const routesAdmin = [
         component: Casos,
     },
     {
+        path: "/admin/casos/tramitespordepartamentos",
+        layout: LayoutAdmin,
+        component: TramitesPorDepartamento,
+    },
+    {
         path: "/admin/tramites/editartramites",
         layout: LayoutAdmin,
         component: EditarTramites,
@@ -69,11 +73,6 @@ const routesAdmin = [
         path: "/admin/consulta/verconsulta",
         layout: LayoutAdmin,
         component: VerConsulta,
-    },
-    {
-        path: "/admin/tramites/editarciclo",
-        layout: LayoutAdmin,
-        component: EditarCiclo,
     }
 ];
 
