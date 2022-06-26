@@ -21,6 +21,8 @@ const App = ({origin}) => {
 
   ]);
 
+  const cookies = new Cookies();
+
 
   
   const redireccionamiento = (id, nombre) => {
@@ -39,7 +41,7 @@ const App = ({origin}) => {
 
   async function actualizarTabla(){
     (async () => {
-      axios.get('http://localhost:3977/api/v1/departamento/getAll')
+      axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+ cookies.get('organizacion_id'))
       .then(({data}) => {
 
       for(let i = 0; i < data.user.length; i++){   

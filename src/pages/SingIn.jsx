@@ -37,7 +37,7 @@ function SingIn() {
 			axios.post('http://localhost:3977/api/v1/organizacion/crearOrganizacion',user)
             .then(({data}) => {
 
-				registraUsuario(data.user.nombre_org, body.contrasena, data.user._id);
+				registraUsuario(body.nombre, body.contrasena, data.user._id);
 
 				Swal.fire(
 					'¡Organizacion registrada con exito!',
@@ -93,7 +93,7 @@ function SingIn() {
             organizacion_id: orgId
 		}
 
-		axios.post('http://localhost:3977/api/v1/registrar/usuario',user)
+		axios.post('http://localhost:3977/api/v1/usuarios/registrar/usuario',user)
             .then(({data}) => {
 
             }).catch(({response}) => {

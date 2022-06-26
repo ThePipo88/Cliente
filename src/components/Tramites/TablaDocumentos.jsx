@@ -16,7 +16,7 @@ const App = () => {
       name: 'Documentos'
     }
   
-    const editarDepartamento = () => {
+    const editarDocumento = () => {
       navigate("/admin/departamentos/editar", {state:{myData}});
     }
   
@@ -25,6 +25,8 @@ const App = () => {
         key: '1',
         documento: 'Hoja de vida',
         descripcion: 'Hoja de vida de Danel Orisi',
+        estado: 'S',
+        tipArch: 'PDF',
         accion: <button className='button-37'></button>,
       }
     ];
@@ -130,7 +132,7 @@ const App = () => {
         title: 'Documento',
         dataIndex: 'documento',
         key: 'documento',
-        width: '50%',
+        width: '30%',
         ...getColumnSearchProps('documento'),
         sorter: (a, b) => a.address.length - b.address.length,
         sortDirections: ['descend', 'ascend'],
@@ -139,8 +141,22 @@ const App = () => {
         title: 'Descripcion',
         dataIndex: 'descripcion',
         key: 'descripcion',
-        width: '30%',
+        width: '40%',
         ...getColumnSearchProps('descripcion'),
+      },
+      {
+        title: 'Estado',
+        dataIndex: 'estado',
+        key: 'estado',
+        width: '10%',
+        ...getColumnSearchProps('estado'),
+      },
+      {
+        title: 'Tipo Archivo',
+        dataIndex: 'tipArch',
+        key: 'tipArch',
+        width: '10%',
+        ...getColumnSearchProps('tipArch'),
       },
       {
         title: 'Accion',

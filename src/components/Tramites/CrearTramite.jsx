@@ -1,10 +1,18 @@
-import React, {useState} from "react";
-import { Modal, Button, Input, Form, Alert  } from 'antd';
+import React, {useState, useEffect} from "react";
+import { Modal, Button, Input, Form, Alert, Select  } from 'antd';
+import { useLocation } from 'react-router-dom';
 import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
 import { message } from 'antd';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
+import axios from "axios";
+import Cookies from "universal-cookie";
+
+const { Option } = Select;
 
 const App = (mostrar) => {
+
+  const location = useLocation();
 
     const [visible, setVisible] = useState(false);
 
@@ -14,22 +22,94 @@ const App = (mostrar) => {
 
     const [departamentoAsinar, setDepartamentoAginar] = useState('');
 
-    const onFinish = (values) => {
-        if(nombre != '' && descripcion != '' && departamentoAsinar != ''){
-            setVisible(false);
-            form.resetFields();
-            setTimeout(() => {
-                swal({
-                    title: "Felicidades",
-                    text: "Tramite agregado con exito",
-                    icon: "success",
-                    button: "Aceptar"
+    const [dep, setDep] = useState([
+
+    ]);
+    const data = location.state;
+
+    const cookies = new Cookies();
+
+    
+
+
+    useEffect(() => {
+      return () => {
+        (
+          async () => {
+            axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+cookies.get('organizacion_id'))
+            .then(({data}) => {
+    
+              for(let i = 0; i < data.user.length; i++){   
+                const newDep = {
+                key: i,
+                nombre: data.user[i].nombre_dep,
+                };
+                setDep((pre) => {
+                  return [...pre, newDep];
                 });
-            },200)
-        }else{
-        
+            }
+    
+            }).catch(({response}) => {
+      
+           })
+          }
+        )();
+    }
+    },[]);
+
+    const onFinish = (values) => {
+      if(nombre != '' && descripcion != '' && departamentoAsinar != ''){
+
+
+        const user = {
+          tipo_tra: nombre,
+          departamento_id: departamentoAsinar,
+          descripcion_tra: descripcion,
         }
-    };
+    
+        axios.post('http://localhost:3977/api/v1/tramites/registrartramites',user)
+                .then(({data}) => {
+
+
+          setVisible(false);
+          form.resetFields();
+              swal({
+                  title: "Felicidades",
+                  text: "Tramite registrado con exito",
+                  icon: "success",
+                  button: "Aceptar",
+              }).then((result) => {
+                window.location.reload();
+              })
+              
+                }).catch(({response}) => {
+    
+            if(response.status == "500"){
+              Swal.fire({
+                title: 'Tramite ya existentes',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                
+                })
+            }else if(response.status == "500"){
+              Swal.fire({
+                title: 'Se produjo un error',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                
+                })
+            }
+          })
+      }else{
+      
+      }
+  };
 
     const [form] = Form.useForm();
 
@@ -37,6 +117,15 @@ const App = (mostrar) => {
         form.resetFields();
         setVisible(false);
     }
+
+
+    const onChangeDepartamento = (value) => {
+      setDepartamentoAginar(value);
+    };
+  
+    const onSearch = (value) => {
+      console.log('search:', value);
+    };
 
     return(
     <>
@@ -93,15 +182,18 @@ const App = (mostrar) => {
       </Form.Item>
 
       <Form.Item
-        name="departamentoAsinar"
-        rules={[
-          {
-            required: true,
-            message: 'El numero de nombre del departamento a asignar es requerido',
-          },
-        ]}
+      name="departamentoAsinar"
+    >
+       <Select
+        showSearch
+        placeholder="Departamento a Asignar"
+        optionFilterProp="children"
+        onChange={onChangeDepartamento}
+        onSearch={onSearch}
+        prefix={<HomeOutlined />}
       >
-        <Input size="large" placeholder="Departamento a asignar" onChange={(e) => setDepartamentoAginar(e.target.value)} prefix={<HomeOutlined />} />
+      {dep.map((user)=> <Option key={user.key} value={user.nombre}/>) }
+      </Select>
       </Form.Item>
 
       <Form.Item

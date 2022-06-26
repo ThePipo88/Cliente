@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { useLocation } from 'react-router-dom';
 import Navbar from "../components/Dashboard/Navbar";
-import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
 import { Alert, Form, Input, Button, Select, DatePicker } from 'antd';
 import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined, SolutionOutlined} from '@ant-design/icons';
@@ -16,11 +15,55 @@ const { Option } = Select;
 function EditarDepartamento(props) {
 
   const location = useLocation();
+
   const data = location.state;
 
 const [showAlert, setShowAlert] = useState(false);
 
-const nombre = "Departamentos > "+ data.myData.name;
+const [nombreDepartamentoT, setNombDepT] = useState('');
+
+
+//Departamento
+const [body, setBody] = useState({ departamento: '', descripcion: '', telefono: '', correoElectronico: '', jefeDepa:''})
+
+	const handleChange = (e,name) => {
+
+    if(name == "departamento"){
+      body.departamento = e.target.value;
+    } 
+    else if(name == "descripcion"){
+      body.descripcion = e.target.value;
+    }
+    else if(name == "telefono"){
+      body.telefono = e.target.value;
+    }
+    else if(name == "correoElectronico"){
+      body.correoElectronico = e.target.value;
+    }
+    else if(name == "tipoEmpleado"){
+      body.jefeDepa = e.target.value;
+    }
+
+	}
+
+  //Empleado
+  const [nombreE, setNombreEmp] = useState('');
+
+  const [apellidos, setApellidos] = useState('');
+
+  const [cedula, setCedula] = useState('');
+
+  const [fechaNac, setFechaNac] = useState('');
+
+  const [tipoEmp, setTipoEmp] = useState('');
+
+  const [form2] = Form.useForm();
+
+  //Cargar los empleados en el select
+  const [emp, setEmp] = useState([
+
+  ]);
+
 
 //Actualizar datos en el sistema
 
@@ -34,6 +77,9 @@ useEffect(() => {
         body.descripcion = data.user.descripcion_dep;
         body.telefono = data.user.tel_dep;
         body.correoElectronico = data.user.correo_dep;
+        body.jefeDepa = data.user.jefe_dep;
+
+        setNombDepT(body.departamento);
 
         cargarForm();
 
@@ -43,29 +89,31 @@ useEffect(() => {
      })
     }
     )();
+
+    (
+      async () => {
+        axios.get('http://localhost:3977/api/v1/empleados/obtener/empleadosPorDepartamento/'+data.myData.id_dep)
+        .then(({data}) => {
+
+          for(let i = 0; i < data.user.length; i++){   
+            const newUser = {
+            key: i,
+            nombre: data.user[i].nombre_emp +' '+data.user[i].apellidos_emp,
+            };
+            setEmp((pre) => {
+              return [...pre, newUser];
+            });
+        }
+
+        }).catch(({response}) => {
+  
+       })
+      }
+    )();
   }
 },[]);
 
-//Variables para actualizar departamento
-
-const [visible, setVisible] = useState(false);
-
-  const [nombreD, setNombreDep] = useState();
-
-  const [descripcion, setDescripcion] = useState('');
-
-  const [telefono, setTelefono] = useState('');
-
-  const [correo, setCorreo] = useState('');
-
-  const [body, setBody] = useState({ departamento: '', Descripcion: '', telefono: '', correoElectronico: '', tipoEmpleado:''})
-
-	const handleChange = e => {
-		setBody({
-			...body,
-			[e.target.name]: e.target.value
-		})
-	}
+  
 
   const onChangeFecha = (value) => {
     setFechaNac(value);
@@ -73,23 +121,45 @@ const [visible, setVisible] = useState(false);
   
   const onChangeJefe = (value) => {
     /*console.log(`selected ${value}`);*/
-    body.tipoEmpleado = value;
+    body.jefeDepa = value;
   };
 
   const onSearch = (value) => {
     console.log('search:', value);
-
   };
 
     const actualizarDepartamento = (values) => {
-            setTimeout(() => {
-                swal({
-                    title: "Felicidades",
-                    text: "Infromacion de departamento actualizada",
-                    icon: "success",
-                    button: "Aceptar"
-                });
-            },200)
+
+      console.log(body);
+
+      
+      const user = {
+        nombre_dep: body.departamento,
+        jefe_dep: body.jefeDepa,
+        descripcion_dep: body.descripcion,
+        tel_dep: body.telefono,
+        correo_dep: body.correoElectronico
+      }
+  
+      axios.put('http://localhost:3977/api/v1/departamento/actualizar/'+data.myData.id_dep, user)
+        .then(({data}) => {
+
+  
+          setTimeout(() => {
+            swal({
+                title: "Felicidades",
+                text: "Infromacion de departamento actualizada",
+                icon: "success",
+                button: "Aceptar"
+            }).then((result) => {
+              window.location.reload();
+            })
+  
+        },200)
+  
+        }).catch(({response}) => {
+  
+      }) 
 
     };
 
@@ -101,7 +171,12 @@ const [visible, setVisible] = useState(false);
    const [form] = Form.useForm();
 
    const cargarForm = () => {
-    form.setFieldsValue({departamento: body.departamento, descripcion: body.descripcion, telefono: body.telefono, correoElectronico: body.correoElectronico});
+    if(body.jefeDepa != ''){
+      form.setFieldsValue({departamento: body.departamento, jefeDepartamento: body.jefeDepa, descripcion: body.descripcion, telefono: body.telefono, correoElectronico: body.correoElectronico});
+    }else{
+      form.setFieldsValue({departamento: body.departamento, descripcion: body.descripcion, telefono: body.telefono, correoElectronico: body.correoElectronico});
+    }
+    
   }
 
    //Variables para agregar empleados
@@ -136,25 +211,10 @@ const [visible, setVisible] = useState(false);
     })
   };
 
-  const [nombreE, setNombreEmp] = useState('');
-
-  const [apellidos, setApellidos] = useState('');
-
-  const [cedula, setCedula] = useState('');
-
-  const [fechaNac, setFechaNac] = useState('');
-
-  const [tipoEmp, setTipoEmp] = useState('');
-
-   const [form2] = Form.useForm();
-
-const handleNameChange = (newName)=>{
-  setShowAlert(newName);
-};
 
   return (
       <div className="metrics">
-      <Navbar name = {nombre}/>
+      <Navbar name = {"Departamentos > "+nombreDepartamentoT}/>
       <div className="grid-edit">
       <div className="top__edit">
         <div className="container_edit">
@@ -183,7 +243,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Nombre del departamento" prefix={<BankOutlined />} />
+        <Input size="large" placeholder="Nombre del departamento" onChange={e => handleChange(e,"departamento")} prefix={<BankOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -195,7 +255,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Descripcion" onChange={handleChange} prefix={<AuditOutlined />} />
+        <Input size="large" placeholder="Descripcion" onChange={e => handleChange(e,"descripcion")} prefix={<AuditOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -207,7 +267,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Telefono" onChange={handleChange} prefix={<PhoneOutlined />} />
+        <Input size="large" placeholder="Telefono" onChange={e => handleChange(e,"telefono")} prefix={<PhoneOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -219,7 +279,7 @@ const handleNameChange = (newName)=>{
           },
         ]}
       >
-        <Input size="large" placeholder="Correo electronico" onChange={handleChange} prefix={<CommentOutlined />} />
+        <Input size="large" placeholder="Correo electronico" onChange={e => handleChange(e,"correoElectronico")} prefix={<CommentOutlined />} />
       </Form.Item>
 
       <Form.Item
@@ -232,11 +292,8 @@ const handleNameChange = (newName)=>{
         onChange={onChangeJefe}
         onSearch={onSearch}
         prefix={<CommentOutlined />}
-        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
       >
-        <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-        <Option value="tom">Tom</Option>
+        {emp.map((user)=> <Option key={user.key} value={user.nombre}/>) }
       </Select>
       </Form.Item>
 
