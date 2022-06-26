@@ -11,6 +11,7 @@ import TablaDocumentos from "../components/Tramites/TablaDocumentos";
 import TablaCiclos from "../components/Tramites/TablaCiclos";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import CrearTramite from "../components/Tramites/CrearTramite";
 
 
 const { Option } = Select;
@@ -34,6 +35,11 @@ function EditarTramite(props){
     const [dep, setDep] = useState([
 
     ]);
+    const { nameChange } = props;
+
+    const mostrarSms = (newName)=>{
+        nameChange(newName);
+    };
 
     //const [descripcion, setDescripcion] = useState('');
 
@@ -246,7 +252,10 @@ function EditarTramite(props){
             </div>
             <div className="grid-users">
                 <div className="bootom__users">
-                <h3>Docuemtos Requeridos</h3>
+                    <div className="container_button">
+                    <CrearTramite mostrar={mostrarSms}/>
+                    </div>
+                    <h3>Docuemtos Requeridos</h3>
                 <ResponsiveContainer width="100%" height="100%">
                 <div className="container_table">
                     <TablaDocumentos/>
