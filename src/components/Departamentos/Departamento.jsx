@@ -21,7 +21,7 @@ function Departamento(props) {
       </div>
 
       <div className="container_button">
-      <CrearDepartamento mostrar={mostrarSms}/>
+       <CrearDepartamento mostrar={mostrarSms}/>
       </div>
       </div>
       <ResponsiveContainer width="100%" height="100%">

@@ -7,31 +7,26 @@ import 'antd/dist/antd.min.css';
 import Swal from 'sweetalert2';
 import axios from "axios";
 import Cookies from "universal-cookie";
-//Ocupo mandar una props onde me diga si estoy en la pagina de casos o en la departamento
 
-const App = ({origin}) => {
+const App = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
-  const [url, setUrl] = useState(origin ? "/admin/casos/tramitespordepartamentos" : "/admin/departamentos/editar");
 
   const navigate = useNavigate();
-  
-  const [dataSource, setDataSource] = useState([
-
-  ]);
-
-  const cookies = new Cookies();
 
 
-  
-  const redireccionamiento = (id, nombre) => {
+  const editarDepartamento = (id, nombre) => {
     const myData = {
       name: nombre,
       id_dep: id
     }
-    navigate(url, {state:{myData}});
+    navigate("/admin/departamentos/editar", {state:{myData}});
   }
+
+  const [dataSource, setDataSource] = useState([
+
+  ]);
 
   useEffect(() => {
     return () => {
@@ -41,47 +36,47 @@ const App = ({origin}) => {
 
   async function actualizarTabla(){
     (async () => {
-      axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+ cookies.get('organizacion_id'))
+      axios.get('http://localhost:3977/api/v1/departamento/getAll')
       .then(({data}) => {
 
-      for(let i = 0; i < data.user.length; i++){   
-          const newStudent = {
-          key: i,
-          id: data.user[i]._id,
-          departamento: data.user[i].nombre_dep,
-          correo: data.user[i].correo_dep,
-          redirect: <button className='button-37' onClick={() =>{redireccionamiento(newStudent.id, newStudent.departamento)}} ></button>,
-          };
-          setDataSource((pre) => {
-            return [...pre, newStudent];
-          });
-      }
+        for(let i = 0; i < data.user.length; i++){   
+            const newStudent = {
+            key: i,
+            id: data.user[i]._id,
+            departamento: data.user[i].nombre_dep,
+            correo: data.user[i].correo_dep,
+            editar: <button className='button-37' onClick={() => editarDepartamento(newStudent.id, newStudent.departamento)}></button>,
+            };
+            setDataSource((pre) => {
+              return [...pre, newStudent];
+            });
+        }
 
   
       }).catch(({response}) => {
 
-          if(response.status == "500"){
-            Swal.fire({
-              title: 'Organizacion o correo ingresado ya existentes',
-              icon: 'warning',
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Aceptar'
-              }).then((result) => {
-              
-              })
-          }else if(response.status == "500"){
-            Swal.fire({
-              title: 'Se produjo un error',
-              icon: 'warning',
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Aceptar'
-              }).then((result) => {
-              
-              })
-          }
-        })
+  if(response.status == "500"){
+    Swal.fire({
+      title: 'Organizacion o correo ingresado ya existentes',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then((result) => {
+      
+      })
+  }else if(response.status == "500"){
+    Swal.fire({
+      title: 'Se produjo un error',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then((result) => {
+      
+      })
+  }
+})
     })();
 
   }
@@ -161,27 +156,27 @@ const App = ({origin}) => {
       />
     ),
     onFilter: (value, record) =>
-        record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => searchInput.current?.select(), 100);
-        }
-      },
-      render: (text) =>
-        searchedColumn === dataIndex ? (
-          <Highlighter
-            highlightStyle={{
-              backgroundColor: '#ffc069',
-              padding: 0,
-            }}
-            searchWords={[searchText]}
-            autoEscape
-            textToHighlight={text ? text.toString() : ''}
-          />
-        ) : (
-          text
-        ),
-    });
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
 
   const columns = [
     {
@@ -201,13 +196,12 @@ const App = ({origin}) => {
       ...getColumnSearchProps('correo'),
     },
     {
-        title: origin ? 'Tramites' : 'Editar',
-        dataIndex: 'redirect',
-        key: 'redirect',
+      title: 'Editar',
+      dataIndex: 'editar',
+      key: 'editar',
     },
   ];
-
-  return <Table columns = {columns} dataSource={dataSource} />;
+  return <Table columns={columns} dataSource={dataSource} />;
 };
 
 export default App;
