@@ -9,6 +9,9 @@ import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/i
 import swal from 'sweetalert';
 import TablaDocumentos from "../components/Tramites/TablaDocumentos";
 import TablaCiclos from "../components/Tramites/TablaCiclos";
+import axios from "axios";
+import Cookies from "universal-cookie";
+
 
 const { Option } = Select;
 
@@ -23,11 +26,19 @@ function EditarTramite(props){
     //Variables para actualizar Tramite
     const [visible, setVisible] = useState(false);
 
-    //const [nombreT, setNombreTra] = useState('');
+    const [nombreT, setNombreTra] = useState('');
+
+    const cookies = new Cookies();
+
+ 
+    const [dep, setDep] = useState([
+
+    ]);
 
     //const [descripcion, setDescripcion] = useState('');
 
     //const [departamnetoAsig, setDepartamentoAsig] = useState('');
+
 
 
     const [body, setBody] = useState({ nombreT: '', descripcion: '', departamnetoAsig: ''})
@@ -44,6 +55,47 @@ function EditarTramite(props){
       body.departamnetoAsig = e.target.value;
     }
 	}
+
+    //Actualizar Tramite
+
+    useEffect(() => {
+        return () => {
+            (async () => {
+                axios.get('http://localhost:3977/api/v1/tramites/obtener/'+data.myData.id_tra)
+                .then(({data}) => {
+          
+                  body.nombreT = data.user.tipo_tra;
+                  body.descripcion = data.user.descripcion_tra;
+                  //body.departamnetoAsig = data.user.departamento_id;
+                  setNombreTra(body.nombreT);
+                }).catch(({response}) => {
+          
+               })
+              }
+              )();
+              (
+                async () => {
+                  axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+cookies.get('organizacion_id'))
+                  .then(({data}) => {
+          
+                    for(let i = 0; i < data.user.length; i++){   
+                      const newDep = {
+                      key: i,
+                      nombre: data.user[i].nombre_dep,
+                      };
+                      setDep((pre) => {
+                        return [...pre, newDep];
+                      });
+                  }
+          
+                  cargarForm();
+                  }).catch(({response}) => {
+            
+                 })
+                }
+              )();
+        }
+    },[]);
 
 
     const onChangeJefe = (value) => {
@@ -76,6 +128,15 @@ function EditarTramite(props){
     const handleNameChange = (newName)=>{
         setShowAlert(newName);
     };
+    const onChangeDepartamento = (value) => {
+        body.departamnetoAsig = value;
+      };
+
+
+    const cargarForm = () => {
+        form.setFieldsValue({nombreT: body.nombreT, descripcion: body.descripcion, departamnetoAsig: body.departamnetoAsig});
+    }
+        
     
 
     return(
@@ -101,7 +162,7 @@ function EditarTramite(props){
                             autoComplete="off"
                         >
                         <Form.Item
-                            name="Tramite"
+                            name="nombreT"
                             rules={[
                             {
                                 required: true,
@@ -113,7 +174,7 @@ function EditarTramite(props){
                         </Form.Item>
 
                         <Form.Item
-                            name="Descripcion"
+                            name="descripcion"
                             rules={[
                             {
                                 required: true,
@@ -125,16 +186,19 @@ function EditarTramite(props){
                         </Form.Item>
 
                         <Form.Item
-                            name="DepartamnetoAsig"
-                            rules={[
-                            {
-                                required: true,
-                                message: 'El Departamento asignado es requerido',
-                            },
-                            ]}
-                        >
-                            <Input size="large" placeholder="Departamento a Asignar" onChange={e => handleChange(e,"departamnetoAsig")} prefix={<HomeOutlined />} />
-                        </Form.Item>
+                            name="departamentoAsinar"
+                            >
+                            <Select
+                                showSearch
+                                placeholder="Departamento a Asignar"
+                                optionFilterProp="children"
+                                onChange={onChangeDepartamento}
+                                onSearch={onSearch}
+                                prefix={<HomeOutlined />}
+                            >
+                            {dep.map((user)=> <Option key={user.key} value={user.nombre}/>) }
+                            </Select>
+                            </Form.Item>
                         <Form.Item
                             wrapperCol={{
                             offset: 0,
