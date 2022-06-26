@@ -137,7 +137,38 @@ function EditarTramite(props){
         form.setFieldsValue({nombreT: body.nombreT, descripcion: body.descripcion, departamnetoAsig: body.departamnetoAsig});
     }
         
+    const actualizarTramite1 = (values) => {
+
+        console.log(body);
+  
+        
+        const user = {
+          tipo_tra: body.nombreT,
+          descripcion_tra: body.descripcion,
+          departamento_id: body.departamnetoAsig 
+        }
     
+        axios.put('http://localhost:3977/api/v1/tramites/actualizar/'+data.myData.id_tra, user)
+          .then(({data}) => {
+  
+    
+            setTimeout(() => {
+              swal({
+                  title: "Felicidades",
+                  text: "Infromacion de departamento actualizada",
+                  icon: "success",
+                  button: "Aceptar"
+              }).then((result) => {
+                window.location.reload();
+              })
+    
+          },200)
+    
+          }).catch(({response}) => {
+    
+        }) 
+  
+      }; 
 
     return(
         <div className="metrics">
@@ -158,7 +189,7 @@ function EditarTramite(props){
                             initialValues={{
                                 remember: true,
                             }}
-                            onFinish={actualizarTramite}
+                            onFinish={actualizarTramite1}
                             autoComplete="off"
                         >
                         <Form.Item
