@@ -22,6 +22,14 @@ const App = (mostrar) => {
 
     const [departamentoAsinar, setDepartamentoAginar] = useState('');
 
+    const [nombreDoc, setNombreDoc] = useState('');
+
+    const [descripcionDoc, setDesdoc] = useState('');
+
+    const [estado, setEstado] = useState('');
+
+    const [tipoArch, setTipoArc] = useState('');
+
     const [dep, setDep] = useState([
 
     ]);
@@ -65,6 +73,14 @@ const App = (mostrar) => {
           tipo_tra: nombre,
           departamento_id: departamentoAsinar,
           descripcion_tra: descripcion,
+          documentos: [
+            {
+              nombre_documento: nombreDoc,
+              descripcion_documento: descripcionDoc,
+              estado_documento: estado,
+              tipo_documento: tipoArch
+            }
+          ]
         }
     
         axios.post('http://localhost:3977/api/v1/tramites/registrartramites',user)
