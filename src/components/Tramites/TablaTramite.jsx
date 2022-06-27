@@ -14,11 +14,13 @@ const App = () => {
 
   const navigate = useNavigate();
 
-  const myData = {
-    name: 'Tramites'
-  }
+  
 
-  const editarTramite = () => {
+  const editarTramite = (id,name) => {
+    const myData = {
+      name: 'Tramites',
+      id_tra: id
+    }
     navigate("/admin/tramites/editartramites", {state:{myData}});
   }
 
@@ -45,7 +47,7 @@ const App = () => {
             tramite: data.user[i].tipo_tra,
             departamento: data.user[i].departamento_id,
             descripcion: data.user[i].descripcion_tra,
-            editarTramite: <button className='button-37' onClick={() => editarTramite(newStudent.id, newStudent.departamento)}></button>,
+            editarTramite: <button className='button-37' onClick={() => editarTramite(newStudent.id,newStudent.departamento)}></button>,
             };
             setDataSource((pre) => {
               return [...pre, newStudent];
