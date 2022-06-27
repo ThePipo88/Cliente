@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Modal, Button, Input, Form, Alert  } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Button, Input, Form, Select, DatePicker  } from 'antd';
 import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined} from '@ant-design/icons';
 import { message } from 'antd';
 import Swal from 'sweetalert2';
@@ -13,6 +13,7 @@ const App = ({mostrar}) => {
 
   const cookies = new Cookies();
 
+  const {Option} = Select;
 
   const [visible, setVisible] = useState(false);
 
@@ -22,63 +23,99 @@ const App = ({mostrar}) => {
 
   const [telefono, setTelefono] = useState('');
 
-  const [correo, setCorreo] = useState('');
+  const [caso, setCaso] = useState('');
+
+  const [fechaFin, setFechaFinalizacion] = useState(new Date());
+
+  const departamentos = [
+
+  ]
+
+  const [dep, setDepartamentos] = useState([]);
+
+  const [depart, setDepart] = useState('');
+
+  const [tram, setTram] = useState('');
+
+  useEffect(() => {
+    return () => {
+      axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+ cookies.get('organizacion_id'))
+      .then(({data}) => {
+
+      const newArr = [...dep];
+
+      for(let i = 0; i < data.user.length; i++){   
+
+          const newStudent = {
+            key: i,
+            nombre: data.user[i].nombre_dep,
+            idDepartamento: data.user[i]._id,
+          };
+          newArr.push(newStudent);
+      }
+      setDepartamentos(newArr);
+  
+      }).catch(({response}) => {
+            Swal.fire({
+              title: 'Organizacion o correo ingresado ya existentes',
+              icon: 'warning',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Aceptar'
+              }).then((result) => {
+              
+              })
+        })
+    }
+  },[]);
+
+  const [myArray, setMyArray] = useState([]);
+
+  const tramites = [
+    {
+        
+    }
+  ]
 
 const onFinish = (values) => {
-    if(nombre != '' && descripcion != '' && telefono != '' && correo != ''){
 
-
-        const user = {
-        nombre_dep: nombre,
-        jefe_dep: "",
-        descripcion_dep: descripcion,
-        tel_dep: telefono,
-        correo_dep: correo,
-        organizacion_id: cookies.get('organizacion_id')
-        }
-    
-        axios.post('http://localhost:3977/api/v1/departamento/registrar',user)
-                .then(({data}) => {
-
-
-        setVisible(false);
-        form.resetFields();
-            swal({
-                title: "Felicidades",
-                text: "Departamento registrado con exito",
-                icon: "success",
-                button: "Aceptar",
-            }).then((result) => {
-                window.location.reload();
-            })
-            
-                }).catch(({response}) => {
-    
-            if(response.status == "500"){
-            Swal.fire({
-                title: 'Organizacion o correo ingresado ya existentes',
-                icon: 'warning',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-                }).then((result) => {
-                
-                })
-            }else if(response.status == "500"){
-            Swal.fire({
-                title: 'Se produjo un error',
-                icon: 'warning',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-                }).then((result) => {
-                
-                })
-            }
-        })
-    }else{
-    
+    const newCaso = {
+        nombre_caso: caso,
+        fecApertura_cas: new Date(),
+        fecFinalizacion_cas: fechaFin,
+        nume_cas: "sdfsdfsdfsdf",
+        formato_cas: "Hexadecimal",
+        isAbierto_cas: true,
+        id_tramite: tram,
+        id_departamento: depart,
+        id_organizacion: cookies.get('organizacion_id')
     }
+
+    axios.post('http://localhost:3977/api/v1/casos/registrar/caso', newCaso)
+      .then(({data}) => {
+
+        Swal.fire({
+            title: 'Caso registrado con exito',
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+            }).then((result) => {
+               window.location.reload();
+            })
+
+      }).catch(({response}) => {
+            Swal.fire({
+              title: 'Organizacion o correo ingresado ya existentes',
+              icon: 'warning',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Aceptar'
+              }).then((result) => {
+              
+              })
+        })
+
 };
 
    const [form] = Form.useForm();
@@ -88,6 +125,49 @@ const onFinish = (values) => {
     setVisible(false);
   }
 
+  const onChangeTramites = (value) => {
+
+    setDepart(value);
+
+    axios.get('http://localhost:3977/api/v1/tramites/getByIdDep/'+ value)
+      .then(({data}) => {
+
+      const newArr = [];
+
+      for(let i = 0; i < data.user.length; i++){   
+        const newtramite = {
+            key: i,
+            nombre: data.user[i].tipo_tra,
+            idDepartamento: data.user[i].departamento_id,
+            idTramite: data.user[i]._id
+        }
+        newArr.push(newtramite);
+      }
+
+      setMyArray(newArr);
+
+  
+      }).catch(({response}) => {
+            Swal.fire({
+              title: 'Organizacion o correo ingresado ya existentes',
+              icon: 'warning',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Aceptar'
+              }).then((result) => {
+              
+              })
+        })
+  };
+
+  const onChangeCasos = (value) => {
+    setTram(value);
+  };
+
+  const onSearch = (value) => {
+    console.log('search:', value);
+  };
+
   return (
     <>
       <button className='button-62' onClick={() => setVisible(true)}>
@@ -95,7 +175,7 @@ const onFinish = (values) => {
       </button>
 
       <Modal
-        title="Nuevo Departamento"
+        title="Nuevo Caso"
         centered
         visible={visible}
         onOk={() => setVisible(false)}
@@ -118,6 +198,18 @@ const onFinish = (values) => {
         onFinish={onFinish}
         autoComplete="off"
         >
+            <Form.Item
+            name="nombreCaso"
+            rules={[
+            {
+                required: true,
+                message: 'El nombre del caso es requerido',
+            },
+            ]}
+        >
+            <Input size="large" placeholder="Nombre del caso" onChange={(e) => setCaso(e.target.value)} prefix={<CommentOutlined />} />
+        </Form.Item>
+
         <Form.Item
             name="departamento"
             rules={[
@@ -127,11 +219,47 @@ const onFinish = (values) => {
             },
             ]}
         >
-            <Input size="large" placeholder="Nombre del departamento" onChange={(e) => setNombre(e.target.value)} prefix={<BankOutlined />} />
+            <Select
+        showSearch
+        placeholder="Departamento"
+        optionFilterProp="children"
+        onChange={onChangeTramites}
+        onSearch={onSearch}
+        prefix={<CommentOutlined />}
+        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+      >
+        {dep.map(documento => (
+            <Option key={documento.key} value={documento.idDepartamento}> {documento.nombre}</Option>
+      ))}
+      </Select>
         </Form.Item>
 
         <Form.Item
-            name="Descripcion"
+            name="tramites"
+            rules={[
+            {
+                required: true,
+                message: 'El nombre del tramite es requerido',
+            },
+            ]}
+        >
+            <Select
+        showSearch
+        placeholder="Tramites"
+        optionFilterProp="children"
+        onChange={onChangeCasos}
+        onSearch={onSearch}
+        prefix={<CommentOutlined />}
+        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+      >
+        {myArray.map(documento => (
+            <Option key={documento.key} value={documento.idTramite}> {documento.nombre}</Option>
+      ))}
+      </Select>
+        </Form.Item>
+
+        <Form.Item
+            name="Finalizacion"
             rules={[
             {
                 required: true,
@@ -139,31 +267,7 @@ const onFinish = (values) => {
             },
             ]}
         >
-            <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AuditOutlined />} />
-        </Form.Item>
-
-        <Form.Item
-            name="telefono"
-            rules={[
-            {
-                required: true,
-                message: 'El numero de telefono es requerido',
-            },
-            ]}
-        >
-            <Input size="large" placeholder="Telefono" onChange={(e) => setTelefono(e.target.value)} prefix={<PhoneOutlined />} />
-        </Form.Item>
-
-        <Form.Item
-            name="correoElectronico"
-            rules={[
-            {
-                required: true,
-                message: 'El correo electronico es requerido',
-            },
-            ]}
-        >
-            <Input size="large" placeholder="Correo electronico" onChange={(e) => setCorreo(e.target.value)} prefix={<CommentOutlined />} />
+           <DatePicker placeholder="Fecha de finalizacion" onChange={date => setFechaFinalizacion(date)} style={{ width: '100%' }}  />
         </Form.Item>
 
         <Form.Item
@@ -173,7 +277,7 @@ const onFinish = (values) => {
             }}
         >
             <Button type="primary" htmlType="submit">
-            Registrar
+            Crear Caso
             </Button>
         </Form.Item>
         </Form>

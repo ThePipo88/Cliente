@@ -10,18 +10,20 @@ import Cookies from "universal-cookie";
 
 const App = () => {
   const [searchText, setSearchText] = useState('');
+
   const [searchedColumn, setSearchedColumn] = useState('');
+
+  const [nombreDep, setNombreDep] = useState('');
+
   const searchInput = useRef(null);
+
+  const cookies = new Cookies();
 
   const navigate = useNavigate();
 
 
   const editarDepartamento = (id, nombre) => {
-    const myData = {
-      name: nombre,
-      id_dep: id
-    }
-    navigate("/admin/departamentos/editar", {state:{myData}});
+    
   }
 
   const [dataSource, setDataSource] = useState([
@@ -34,28 +36,49 @@ const App = () => {
     }
   },[]);
 
+  async function getNombreTramite(newCaso){
+
+    await axios.get('http://localhost:3977/api/v1/tramites/obtener/'+newCaso.tramite)
+      .then(({data}) => {
+        newCaso.tramite = data.user.tipo_tra;
+        setDataSource((pre) => {
+          return [...pre, newCaso];
+        });
+      }).catch(({response}) => {
+       })
+  }
+
+  async function getNombreDep(id,newCaso){
+
+    await axios.get('http://localhost:3977/api/v1/departamento/obtener/'+id)
+      .then(({data}) => {
+        newCaso.departamento = data.user.nombre_dep;
+        getNombreTramite(newCaso);
+      }).catch(({response}) => {
+       })
+  }
+
   async function actualizarTabla(){
     (async () => {
-      axios.get('http://localhost:3977/api/v1/departamento/getAll')
+      axios.get('http://localhost:3977/api/v1/casos/getByIdOrganizacion/'+cookies.get('organizacion_id'))
       .then(({data}) => {
 
-        for(let i = 0; i < data.user.length; i++){   
-            const newStudent = {
+        for(let i = 0; i < data.user.length; i++){  
+
+          const newCaso = {
             key: i,
             id: data.user[i]._id,
-            departamento: data.user[i].nombre_dep,
-            correo: data.user[i].correo_dep,
-            editar: <button className='button-37' onClick={() => editarDepartamento(newStudent.id, newStudent.departamento)}></button>,
+            departamento: '',
+            tramite: data.user[i].id_tramite,
+            caso: data.user[i].nombre_caso,
+            editar: <button className='button-37' onClick={() => editarDepartamento()}></button>,
             };
-            setDataSource((pre) => {
-              return [...pre, newStudent];
-            });
-        }
 
-  
+            getNombreDep(data.user[i].id_departamento, newCaso);
+            
+        }
       }).catch(({response}) => {
 
-  if(response.status == "500"){
     Swal.fire({
       title: 'Organizacion o correo ingresado ya existentes',
       icon: 'warning',
@@ -65,17 +88,7 @@ const App = () => {
       }).then((result) => {
       
       })
-  }else if(response.status == "500"){
-    Swal.fire({
-      title: 'Se produjo un error',
-      icon: 'warning',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar'
-      }).then((result) => {
-      
-      })
-  }
+
 })
     })();
 
@@ -183,15 +196,22 @@ const App = () => {
       title: 'Departamento',
       dataIndex: 'departamento',
       key: 'departamento',
-      width: '50%',
+      width: '30%',
       ...getColumnSearchProps('departamento'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Correo electronico',
-      dataIndex: 'correo',
-      key: 'correo',
+      title: 'Tramite',
+      dataIndex: 'tramite',
+      key: 'tramite',
+      width: '30%',
+      ...getColumnSearchProps('correo'),
+    },
+    {
+      title: 'Caso',
+      dataIndex: 'caso',
+      key: 'caso',
       width: '30%',
       ...getColumnSearchProps('correo'),
     },
