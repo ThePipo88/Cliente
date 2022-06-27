@@ -12,6 +12,7 @@ import TablaCiclos from "../components/Tramites/TablaCiclos";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import CrearTramite from "../components/Tramites/CrearTramite";
+import CrearDocumento from "../components/Tramites/CrearDocumento";
 
 
 const { Option } = Select;
@@ -252,10 +253,10 @@ function EditarTramite(props){
             </div>
             <div className="grid-users">
                 <div className="bootom__users">
-                    <div className="container_button">
-                    <CrearTramite mostrar={mostrarSms}/>
-                    </div>
                     <h3>Docuemtos Requeridos</h3>
+                    <div className="container_button">
+                    <CrearDocumento mostrar={mostrarSms}/>
+                    </div>
                 <ResponsiveContainer width="100%" height="100%">
                 <div className="container_table">
                     <TablaDocumentos/>

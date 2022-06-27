@@ -6,6 +6,7 @@ import {useNavigate } from 'react-router-dom';
 import 'antd/dist/antd.min.css';
 import Swal from 'sweetalert2';
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 const App = () => {
   const [searchText, setSearchText] = useState('');
@@ -14,7 +15,7 @@ const App = () => {
 
   const navigate = useNavigate();
 
-  
+  const cookies = new Cookies();
 
   const editarTramite = (id,name) => {
     const myData = {
@@ -22,6 +23,8 @@ const App = () => {
       id_tra: id
     }
     navigate("/admin/tramites/editartramites", {state:{myData}});
+    cookies.set('ideTramite', id, {path: '/'});
+
   }
 
 
@@ -81,7 +84,7 @@ const App = () => {
 })
     })();
 
-  }
+}
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();

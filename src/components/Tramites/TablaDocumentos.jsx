@@ -1,8 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import {Highlighter} from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
+import 'antd/dist/antd.min.css';
+import Swal from 'sweetalert2';
+import axios from "axios";
+import Cookies from "universal-cookie";
 
 
 const App = () => {
@@ -11,25 +15,74 @@ const App = () => {
     const searchInput = useRef(null);
   
     const navigate = useNavigate();
+    const cookies = new Cookies();
+
+    
   
     const myData = {
-      name: 'Documentos'
+      name: 'Tramites'
     }
   
     const editarDocumento = () => {
-      navigate("/admin/departamentos/editar", {state:{myData}});
+      navigate("/admin/tramites/adddocumento", {state:{myData}});
     }
   
-    const data = [
-      {
-        key: '1',
-        documento: 'Hoja de vida',
-        descripcion: 'Hoja de vida de Danel Orisi',
-        estado: 'S',
-        tipArch: 'PDF',
-        accion: <button className='button-37'></button>,
+    const [dataSource, setDataSource] = useState([
+
+    ]);
+  
+    useEffect(() => {
+      return () => {
+        actualizarTablaT();
       }
-    ];
+    },[]);
+  
+    async function actualizarTablaT(){
+      (async () => {
+        axios.get('http://localhost:3977/api/v1/tramites/obtener/'+cookies.get('ideTramite'))
+        .then(({data}) => {
+          for(let i = 0; i < data.user.documentos.length; i++){   
+              const newStudent = {
+              key: i,
+              documento: data.user.documentos[i].nombre_documento,
+              descripcion: data.user.documentos[i].descripcion_documento,
+              estado:data.user.documentos[i].estado_documento,
+              tipArch:data.user.documentos[i].tipo_documento,
+              accion: <button className='button-37' onClick={() => editarDocumento()}></button>,
+              };
+              setDataSource((pre) => {
+                return [...pre, newStudent];
+              });
+          }
+  
+    
+        }).catch(({response}) => {
+  
+    if(response.status == "500"){
+      Swal.fire({
+        title: 'Organizacion o correo ingresado ya existentes',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+        }).then((result) => {
+        
+        })
+    }else if(response.status == "500"){
+      Swal.fire({
+        title: 'Se produjo un error',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+        }).then((result) => {
+        
+        })
+    }
+  })
+      })();
+  
+  }
   
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
       confirm();
@@ -164,7 +217,7 @@ const App = () => {
         key: 'accion',
       },
     ];
-    return <Table columns={columns} dataSource={data} />;
+    return <Table columns={columns} dataSource={dataSource} />;
   };
   
   export default App;
