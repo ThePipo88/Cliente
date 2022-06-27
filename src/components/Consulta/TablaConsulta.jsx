@@ -24,6 +24,7 @@ const App = () => {
     {
       key: '1',
       nombreCaso: 'Contratacion Laboral - Michael Solis',
+      departamento:"dsb",
       numeroCaso:'123',
       consultaTraking: <button className='button-33' onClick={() => consultaTraking()} ></button>,
     },
@@ -136,15 +137,22 @@ const App = () => {
       title: 'Caso',
       dataIndex: 'nombreCaso',
       key: 'caso',
-      width: '50%',
+      width: '40%',
       ...getColumnSearchProps('caso'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'Departamento',
+      dataIndex: 'departamento',
+      key: 'departamento',
+      width: '25%',
+    },
+    {
       title: 'Numero Caso',
       dataIndex: 'numeroCaso',
-      key: 'numero caso'
+      key: 'numero caso',
+      width: '20%',
     },
     {
       title: 'Consulta Tracking',
