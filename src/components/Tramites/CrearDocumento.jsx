@@ -21,9 +21,6 @@ const App = (mostrar) => {
 
     const[tipoArchivo, setTipoArchivo] = useState('');
 
-    const [documentoA, setDocumentoA] = useState([
-
-    ]);
 
     const data = location.state;
 

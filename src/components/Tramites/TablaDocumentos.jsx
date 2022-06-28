@@ -19,12 +19,16 @@ const App = () => {
 
     
   
-    const myData = {
-      name: 'Tramites'
-    }
+    
   
-    const editarDocumento = () => {
-      navigate("/admin/tramites/adddocumento", {state:{myData}});
+    const editarDocumento = (id, index) => {
+
+      const myData = {
+        name: 'Tramites',
+        id_doc: id,
+        indice: index
+      }
+      navigate("/admin/tramites/editartramites/editardocumento", {state:{myData}});
     }
   
     const [dataSource, setDataSource] = useState([
@@ -44,11 +48,12 @@ const App = () => {
           for(let i = 0; i < data.user.documentos.length; i++){   
               const newStudent = {
               key: i,
+              id: data.user.documentos[i]._id,
               documento: data.user.documentos[i].nombre_documento,
               descripcion: data.user.documentos[i].descripcion_documento,
               estado:data.user.documentos[i].estado_documento,
               tipArch:data.user.documentos[i].tipo_documento,
-              accion: <button className='button-37' onClick={() => editarDocumento()}></button>,
+              accion: <button className='button-37' onClick={() => editarDocumento(cookies.get('ideTramite'),i)}></button>,
               };
               setDataSource((pre) => {
                 return [...pre, newStudent];

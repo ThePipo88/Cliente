@@ -84,7 +84,7 @@ const routesAdmin = [
         component: CrearDocumento,
     },
     {
-        path: "/admin/tramites/editardocumento",
+        path: "/admin/tramites/editartramites/editardocumento",
         layout: LayoutAdmin,
         component: EditarDocumento,
     },
