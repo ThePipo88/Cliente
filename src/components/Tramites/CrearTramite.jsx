@@ -55,6 +55,7 @@ const App = (mostrar) => {
               for(let i = 0; i < data.user.length; i++){   
                 const newDep = {
                 key: i,
+                id_dep: data.user[i]._id,
                 nombre: data.user[i].nombre_dep,
                 };
                 setDep((pre) => {
@@ -76,8 +77,8 @@ const App = (mostrar) => {
 
         const user = {
           tipo_tra: nombre,
-          departamento_id: descripcion,
-          descripcion_tra: departamentoAsinar,
+          departamento_id: departamentoAsinar,
+          descripcion_tra: descripcion,
           ciclo_tra:
               [
                   {
@@ -221,7 +222,9 @@ const App = (mostrar) => {
         onSearch={onSearch}
         prefix={<HomeOutlined />}
       >
-      {dep.map((user)=> <Option key={user.key} value={user.nombre}/>) }
+      {dep.map(documento => (
+            <Option key={documento.key} value={documento.id_dep}> {documento.nombre}</Option>
+      ))}
       </Select>
       </Form.Item>
 
