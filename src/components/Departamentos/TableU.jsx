@@ -189,9 +189,6 @@ const App = ({origin}) => {
       dataIndex: 'departamento',
       key: 'departamento',
       width: '50%',
-      ...getColumnSearchProps('departamento'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Correo electronico',

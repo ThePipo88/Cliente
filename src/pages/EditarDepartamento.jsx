@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { useLocation } from 'react-router-dom';
 import Navbar from "../components/Dashboard/Navbar";
-import ScrollBars  from 'react-custom-scrollbars';
+import { Link } from 'react-router-dom';
 import { Alert, Form, Input, Button, Select, DatePicker } from 'antd';
 import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined, SolutionOutlined} from '@ant-design/icons';
 import swal from 'sweetalert';
@@ -214,7 +214,9 @@ useEffect(() => {
 
   return (
       <div className="metrics">
-      <Navbar name = {"Departamentos > "+nombreDepartamentoT}/>
+      <Navbar name = {<div>
+                 <span className='nav-text' style={{cursor: "pointer"}} onClick={ () => {window.history.back()}}>Departamentos {'>'} </span>
+                <span className='nav-text' style={{cursor: "pointer"}} > Editar</span></div>}/>
       <div className="grid-edit">
       <div className="top__edit">
         <div className="container_edit">

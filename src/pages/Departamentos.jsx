@@ -15,7 +15,7 @@ const handleNameChange = (newName)=>{
 
   return (
     <div className="metrics">
-      <Navbar name = "Departamentos"/>
+      <Navbar name = {<span className='nav-text'>Departamentos </span>}/>
       <div className="grid-one">
         <Departamento nameChange={handleNameChange}/>
       </div>

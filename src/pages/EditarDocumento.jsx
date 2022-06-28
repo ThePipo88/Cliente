@@ -4,17 +4,12 @@ import { useLocation } from 'react-router-dom';
 import Navbar from "../components/Dashboard/Navbar";
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import ScrollBars  from 'react-custom-scrollbars';
-import { Alert, Form, Input, Button, Select, DatePicker, Dropdown, Menu, Switch } from 'antd';
-import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
+import { Alert, Form, Input, Button, Select } from 'antd';
+import { Link } from 'react-router-dom';
+import {ContainerOutlined,AlignCenterOutlined, HomeOutlined, CommentOutlined} from '@ant-design/icons';
 import swal from 'sweetalert';
-import TablaDocumentos from "../components/Tramites/TablaDocumentos";
-import TablaCiclos from "../components/Tramites/TablaCiclos";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import CrearTramite from "../components/Tramites/CrearTramite";
-import CrearDocumento from "../components/Tramites/CrearDocumento";
-import EditarCiclo from './EditarCiclo';
-import CrearCiclo from "../components/Tramites/CrearCiclo"
 import Swal from 'sweetalert2';
 
 
@@ -47,12 +42,10 @@ function EditarDocumento(props){
   const [form] = Form.useForm();
 
   const ind =data.myData.indice;
+   
+  const {Option} = Select;
 
-  //const [descripcion, setDescripcion] = useState('');
-
-  //const [departamnetoAsig, setDepartamentoAsig] = useState('');
-
-
+  const [estado, setEstado] = useState(false);
 
 const [body, setBody] = useState({ nombreD: '', descripcion: '', estadoD: '', tipoArch: ''})
 
@@ -107,7 +100,12 @@ useEffect(() => {
            
               body.nombreD = data.user.documentos[ind].nombre_documento;
               body.descripcion = data.user.documentos[ind].descripcion_documento;
-              body.estadoD = data.user.documentos[ind].estado_documento;
+
+              if(data.user.documentos[ind].estado_documento){
+                body.estadoD = "Activo";
+              }else{
+                body.estadoD = "Inactivo";
+              }
               body.tipoArch = data.user.documentos[ind].tipo_documento;
 
               setDocumento(data.user);
@@ -133,7 +131,7 @@ useEffect(() => {
 
     documento.documentos[ind].nombre_documento = body.nombreD;
     documento.documentos[ind].descripcion_documento = body.descripcion;
-    documento.documentos[ind].estado_documento = body.estadoD;
+    documento.documentos[ind].estado_documento = estado;
     documento.documentos[ind].tipo_documento = body.tipoArch;
 
     console.log(documento.documentos[ind].nombre_documento)
@@ -174,13 +172,25 @@ useEffect(() => {
                   })
               
             })
-
 };
+
+function onChangeEstado(value){
+  if(value == "Activo"){
+    console.log("Activo");
+    setEstado(true);
+  }else{
+    console.log("Inactivo");
+    setEstado(false);
+  }
+}
 
 
     return(
       <div className="metrics">
-      <Navbar name = {nombre}/>
+      <Navbar name = {<div>
+                 <span className='nav-text' style={{cursor: "pointer"}} onClick={ () => {window.history.back()}}>Tramites {'>'}</span>
+                 <span className='nav-text' style={{cursor: "pointer"}} onClick={ () => {window.history.back()}} >Editar {'>'}</span>
+                 <span className='nav-text'>Documentos</span></div>}/>
       <div className="grid-edit">
           <div className="top__edit">
               <div className="container_edit">
@@ -232,7 +242,17 @@ useEffect(() => {
                       },
                     ]}
                   >
-                    <Switch defaultChecked onChange={onChange}/>
+
+                      <Select
+                       showSearch
+                       placeholder="Departamento a Asignar"
+                        optionFilterProp="children"
+                        onChange={onChangeEstado}
+                        prefix={<CommentOutlined />}
+                        >
+                        <Option value="Activo">Activo</Option>
+                        <Option value="Inactivo">Inactivo</Option>
+                        </Select>
                   </Form.Item>
                   <Form.Item
                     name="tipoArch"

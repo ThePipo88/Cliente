@@ -4,6 +4,7 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from "universal-cookie";
 import 'antd/dist/antd.min.css';
 
 const App = () => {
@@ -12,6 +13,8 @@ const App = () => {
   const searchInput = useRef(null);
 
   const navigate = useNavigate();
+
+  const cookies = new Cookies();
 
   const [datos, setDatos] = useState([
 
@@ -30,7 +33,7 @@ const App = () => {
     return () => {
         (async () => {
 
-            axios.get('http://localhost:3977/api/v1/casos/obtener/')
+            axios.get('http://localhost:3977/api/v1/casos/getByIdOrganizacion/'+cookies.get('organizacion_id'))
             .then(({data}) => {
               
               for(var i = 0; i < data.user.length; i++){
@@ -178,9 +181,6 @@ const App = () => {
       dataIndex: 'nombreCaso',
       key: 'caso',
       width: '40%',
-      ...getColumnSearchProps('caso'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Departamento',

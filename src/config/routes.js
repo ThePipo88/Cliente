@@ -24,8 +24,8 @@ const routesAdmin = [
 
     {
         path: "/",
-        layout: LayoutAdmin,
-        component: Casos,
+        layout: LayoutLogin,
+        component: Login,
     },
     {
         path: "/admin",

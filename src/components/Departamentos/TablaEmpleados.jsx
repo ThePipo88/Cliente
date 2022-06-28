@@ -162,9 +162,7 @@ const App = (props) => {
       dataIndex: 'nombre',
       key: 'nombre',
       width: '20%',
-      ...getColumnSearchProps('nombre'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
+
     },
     {
       title: 'Apellidos',

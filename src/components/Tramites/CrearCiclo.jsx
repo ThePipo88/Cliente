@@ -8,9 +8,13 @@ import Swal from 'sweetalert2';
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-const { Option } = Select;
 
-const App = (mostrar) => {
+
+const App = () => {
+
+    const { Option } = Select;
+
+    const cookies = new Cookies();
 
     const location = useLocation();
 
@@ -22,6 +26,8 @@ const App = (mostrar) => {
 
     const [numCiclo, setNumCiclo] = useState('');
 
+    
+
     const data = location.state;
 
     const [form] = Form.useForm();
@@ -31,9 +37,40 @@ const App = (mostrar) => {
         setVisible(false);
     }
 
+    const [dataSource, setDataSource] = useState([
+
+    ]);
+
+    useEffect(() => {
+        return () => {
+          (
+            async () => {
+              axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+cookies.get('organizacion_id'))
+              .then(({data}) => {
+      
+                for(let i = 0; i < data.user.length; i++){   
+                  const newDep = {
+                  key: i,
+                  id_dep: data.user[i]._id,
+                  nombre: data.user[i].nombre_dep,
+                  };
+                  setDataSource((pre) => {
+                    return [...pre, newDep];
+                  });
+              }
+      
+              }).catch(({response}) => {
+        
+             })
+            }
+          )();
+      }
+      },[]);
+
+
 
     const onChangeCiclo = (value) => {
-      //setDepartamentoAginar(value);
+        setDepartamentoC(value);
     };
   
     const onSearch = (value) => {
@@ -42,16 +79,50 @@ const App = (mostrar) => {
 
     const onFinish = (values) => {
 
+            axios.get('http://localhost:3977/api/v1/tramites/obtener/'+cookies.get('ideTramite'))
+            .then(({data}) => {
+    
+              const tramite = data.user;
+
+              const newCiclo = {
+                id_departamento: departamentoC,
+                estado_cic: false
+              }
+
+              tramite.ciclo_tra.push(newCiclo);
+
+              axios.put('http://localhost:3977/api/v1/tramites/actualizar/'+cookies.get('ideTramite'), tramite)
+            .then(({data}) => {
+
+                swal({
+                    title: "Felicidades",
+                    text: "Departamento agregado con exito",
+                    icon: "success",
+                    button: "Aceptar",
+                }).then((result) => {
+                  window.location.reload();
+                })
+    
+            }).catch(({response}) => {
+      
+           })   
+    
+            }).catch(({response}) => {
+      
+           })          
+
+        
+                
     }
 
     return(
         <>
-                <button className='button-62' onClick={() => setVisible(true)}>
-                Crear Ciclo
-                </button>
+            <button className='button-62' onClick={() => setVisible(true)}>
+                Agregar departamento
+            </button>
 
             <Modal
-                title="Crear Nuevo Ciclo"
+                title="Agregar departamento al ciclo"
                 centered
                 visible={visible}
                 onOk={() => setVisible(false)}
@@ -79,41 +150,17 @@ const App = (mostrar) => {
             >
             <Select
                 showSearch
-                placeholder="Interacion del Ciclo"
+                placeholder="Departamento a seleccionar"
                 optionFilterProp="children"
                 onChange={onChangeCiclo}
                 onSearch={onSearch}
                 prefix={<HomeOutlined />}
             >
-            <Option value="1">1</Option>
-            <Option value="2">2</Option>
-            <Option value="3">3</Option>
-            <Option value="4">4</Option>
+            {dataSource.map(documento => (
+            <Option key={documento.key} value={documento.id_dep}> {documento.nombre}</Option>
+            ))}
   
             </Select>
-            </Form.Item>
-            <Form.Item
-                name="departamentoC"
-                rules={[
-                {
-                    required: true,
-                    message: 'El Nombre del departamento a cual va asignado el Ciclo es Requerido',
-                },
-                ]}
-            >
-                <Input size="large" placeholder="Nombre del Departamento del Ciclo" /*onChange={(e) => setDepartamentoC(e.target.value)}*/ prefix={<ContainerOutlined />} />
-            </Form.Item>
-
-            <Form.Item
-                name="estadoC"
-                rules={[
-                {
-                    required: true,
-                    message: 'El estado del Ciclo es requerido',
-                },
-                ]}
-            >
-                <Input size="large" placeholder="Estado del Ciclo" /*onChange={(e) => setEstadoC(e.target.value)}*/ prefix={<AlignCenterOutlined />} />
             </Form.Item>
             <Form.Item
                 wrapperCol={{

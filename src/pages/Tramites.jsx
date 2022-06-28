@@ -15,7 +15,7 @@ function Tramites(props) {
 
   return (
     <div className="metrics">
-      <Navbar name = "Tramites"/>
+      <Navbar name = {<span className='nav-text'>Tramites </span>}/>
       <div className="grid-one">
       <Tramite nameChange={handleNameChange}/>
       </div>

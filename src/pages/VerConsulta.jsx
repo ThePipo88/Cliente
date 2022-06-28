@@ -83,7 +83,9 @@ function VerConsulta(props) {
 
   return (
     <div className="metrics">
-      <Navbar name = {"Consulta  > Estado"}/>
+      <Navbar name = {<div><span className='nav-text' style={{cursor: "pointer"}} onClick={ () => {window.history.back()}}>Consulta {'>'} </span>
+      <span className='nav-text' style={{cursor: "pointer"}} >Estado </span>
+      </div>}/>
       {datos.map(documento => (
         <div className="grid-tracking" key={documento.key}>
         <div style={{backgroundColor:documento.color}} className="top__tracking">

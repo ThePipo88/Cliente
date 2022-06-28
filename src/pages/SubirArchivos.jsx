@@ -19,7 +19,9 @@ function Tramites(props) {
 
   return (
     <div className="metrics">
-      <Navbar name = "Casos > Gestionar"/>
+      <Navbar name = {<div><span className='nav-text' style={{cursor: "pointer"}} onClick={ () => {window.history.back()}}>Casos {'>'} </span>
+      <span className='nav-text' style={{cursor: "pointer"}} >Gestionar</span>
+      </div>}/>
       <div className="grid-one">
       <Gestionar id={data.myData.id_cons} nombre={data.myData.nombre} />
       </div>

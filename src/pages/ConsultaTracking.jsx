@@ -15,7 +15,7 @@ function ConsultaTracking() {
 
   return (
     <div className="metrics">
-      <Navbar name = "Consulta"/>
+      <Navbar name = {<span className='nav-text' style={{cursor: "pointer"}}>Consulta </span>}/>
       <div className="grid-one">
         <ConsultaT nameChange={handleNameChange}/>
       </div>

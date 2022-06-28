@@ -15,7 +15,7 @@ function Parametros() {
 
   return (
     <div className="metrics">
-      <Navbar name = "Parametros"/>
+      <Navbar name = {<span className='nav-text' >Parametros </span>}/>
       <div className="grid-one">
       <Parametro/>
       </div>

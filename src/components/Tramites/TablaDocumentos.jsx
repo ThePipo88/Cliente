@@ -9,17 +9,13 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 
 
-const App = () => {
+const App = (props) => {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
   
     const navigate = useNavigate();
     const cookies = new Cookies();
-
-    
-  
-    
   
     const editarDocumento = (id, index) => {
 
@@ -52,6 +48,7 @@ const App = () => {
               documento: data.user.documentos[i].nombre_documento,
               descripcion: data.user.documentos[i].descripcion_documento,
               estado:data.user.documentos[i].estado_documento,
+              estadoDoc: getEstado(data.user.documentos[i].estado_documento),
               tipArch:data.user.documentos[i].tipo_documento,
               accion: <button className='button-37' onClick={() => editarDocumento(cookies.get('ideTramite'),i)}></button>,
               };
@@ -63,30 +60,17 @@ const App = () => {
     
         }).catch(({response}) => {
   
-    if(response.status == "500"){
-      Swal.fire({
-        title: 'Organizacion o correo ingresado ya existentes',
-        icon: 'warning',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar'
-        }).then((result) => {
-        
-        })
-    }else if(response.status == "500"){
-      Swal.fire({
-        title: 'Se produjo un error',
-        icon: 'warning',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar'
-        }).then((result) => {
-        
-        })
-    }
   })
       })();
   
+  }
+
+  function getEstado(estado){
+    if(estado){
+      return "Activo";
+    }else{
+      return "Inactivo";
+    }
   }
   
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -191,9 +175,7 @@ const App = () => {
         dataIndex: 'documento',
         key: 'documento',
         width: '30%',
-        ...getColumnSearchProps('documento'),
-        sorter: (a, b) => a.address.length - b.address.length,
-        sortDirections: ['descend', 'ascend'],
+        ...getColumnSearchProps('documento')
       },
       {
         title: 'Descripcion',
@@ -204,8 +186,8 @@ const App = () => {
       },
       {
         title: 'Estado',
-        dataIndex: 'estado',
-        key: 'estado',
+        dataIndex: 'estadoDoc',
+        key: 'estadoDoc',
         width: '10%',
         ...getColumnSearchProps('estado'),
       },

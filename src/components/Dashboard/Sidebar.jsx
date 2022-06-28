@@ -4,7 +4,7 @@ import { IoStatsChartSharp } from "react-icons/io5";
 import { HiMusicNote } from "react-icons/hi";
 import { FiUsers, FiSettings } from "react-icons/fi";
 import { SiHomeassistant,SiFiles, SiOpenstreetmap, SiGooglesearchconsole } from "react-icons/si";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/logo4.png";
 import { IoLogOut } from "react-icons/io5";
 
 const myData = {

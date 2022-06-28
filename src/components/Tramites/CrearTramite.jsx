@@ -77,6 +77,7 @@ const App = (mostrar) => {
 
         const user = {
           tipo_tra: nombre,
+          organizacion_id: cookies.get('organizacion_id'),
           departamento_id: departamentoAsinar,
           descripcion_tra: descripcion,
           ciclo_tra:
@@ -89,12 +90,6 @@ const App = (mostrar) => {
               ],
           documentos:
           [
-              {
-                  nombre_documento: nombreDoc,
-                  descripcion_documento: descripcionDoc,
-                  estado_documento:true,
-                  tipo_documento: tipoArch
-              }
           ]
       }
         axios.post('http://localhost:3977/api/v1/tramites/registrartramites',user)

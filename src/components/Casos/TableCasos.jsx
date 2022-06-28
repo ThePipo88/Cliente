@@ -201,9 +201,6 @@ const App = () => {
       dataIndex: 'departamento',
       key: 'departamento',
       width: '30%',
-      ...getColumnSearchProps('departamento'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Tramite',

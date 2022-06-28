@@ -17,8 +17,6 @@ const App = (mostrar) => {
 
     const [descripcion, setDescripcion] = useState('');
 
-    const [estado, setEstado] = useState('');
-
     const[tipoArchivo, setTipoArchivo] = useState('');
 
 
@@ -34,13 +32,6 @@ const App = (mostrar) => {
         setVisible(false);
     }
 
-    const onChange = (checked) => {
-      if(checked){
-        setEstado(true);
-      }else{
-        setEstado(false);
-      }
-    };
 
   
     const onSearch = (value) => {
@@ -49,25 +40,13 @@ const App = (mostrar) => {
 
     const onFinish = (values) => {
        
-          const user = {
-              
-            documentos:
-            [
-                {
-                    nombre_documento: documento,
-                    descripcion_documento: descripcion,
-                    estado_documento: estado,
-                    tipo_documento:tipoArchivo,
-                }
-            ]
-          }
 
           axios.get('http://localhost:3977/api/v1/tramites/obtener/'+cookies.get('ideTramite'))
           .then(({data}) =>{
             const user = {
                       nombre_documento: documento,
                       descripcion_documento: descripcion,
-                      estado_documento: estado,
+                      estado_documento: true,
                       tipo_documento:tipoArchivo     
             }
             data.user.documentos.push(user);
@@ -86,27 +65,7 @@ const App = (mostrar) => {
                 
                   }).catch(({response}) => {
       
-              if(response.status == "500"){
-                Swal.fire({
-                  title: 'Tramite ya existentes',
-                  icon: 'warning',
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Aceptar'
-                  }).then((result) => {
-                  
-                  })
-              }else if(response.status == "500"){
-                Swal.fire({
-                  title: 'Se produjo un error',
-                  icon: 'warning',
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Aceptar'
-                  }).then((result) => {
-                  
-                  })
-              }
+
             })
             /*
             data.user.documentos.push(user);
@@ -168,17 +127,6 @@ const App = (mostrar) => {
         ]}
       >
         <Input size="large" placeholder="Descripcion" onChange={(e) => setDescripcion(e.target.value)} prefix={<AlignCenterOutlined />} />
-      </Form.Item>
-      <Form.Item
-        name="estado"
-        rules={[
-          {
-            required: true,
-            message: 'El estado del documento es requerido',
-          },
-        ]}
-      >
-        <Switch defaultChecked onChange={onChange}/>
       </Form.Item>
       <Form.Item
         name="tipoArchivo"

@@ -11,7 +11,7 @@ import TablaDocumentos from "../components/Tramites/TablaDocumentos";
 import TablaCiclos from "../components/Tramites/TablaCiclos";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import CrearTramite from "../components/Tramites/CrearTramite";
+import { Link } from 'react-router-dom';
 import CrearDocumento from "../components/Tramites/CrearDocumento";
 import EditarCiclo from './EditarCiclo';
 import CrearCiclo from "../components/Tramites/CrearCiclo"
@@ -180,7 +180,9 @@ function EditarTramite(props){
 
     return(
         <div className="metrics">
-            <Navbar name = {nombre}/>
+            <Navbar name = {<div><Link to={"/admin/tramites" } params={data}>
+                 <span className='nav-text'>Tramites {'>'}</span>
+                </Link> <span className='nav-text'>Editar</span></div>}/>
             <div className="grid-edit">
                 <div className="top__edit">
                     <div className="container_edit">
@@ -254,7 +256,7 @@ function EditarTramite(props){
             </div>
             <div className="grid-users">
                 <div className="bootom__users">
-                    <h3>Docuemtos Requeridos</h3>
+                    <h3>Documentos Requeridos</h3>
                     <div className="container_button">
                     <CrearDocumento mostrar={mostrarSms}/>
                     </div>
@@ -269,20 +271,8 @@ function EditarTramite(props){
                 <div className="bootom__users">
                 <h3>Ciclo</h3>
                 <div className="container_button">
-                    <CrearCiclo mostrar={mostrarSms}/>
+                    <CrearCiclo/>
                 </div>
-                <Select
-                    defaultValue="1"
-                    style={{
-                        width: 120,
-                    }}
-                    onChange={handleChange}
-                    >
-                    <Option value="1">1</Option>
-                    <Option value="2">2</Option>
-                    <Option value="3">3</Option>
-                    <Option value="4">4</Option>
-                </Select>
                 <ResponsiveContainer width="100%" height="100%">
                 <div className="container_table">
                     <TablaCiclos/>

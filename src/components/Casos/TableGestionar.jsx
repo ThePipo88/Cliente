@@ -175,10 +175,7 @@ const App = (props) => {
       title: 'Nombre documento',
       dataIndex: 'nombre',
       key: 'nombre',
-      width: '40%',
-      ...getColumnSearchProps('caso'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
+      width: '40%'
     },
     {
       title: 'Estado',

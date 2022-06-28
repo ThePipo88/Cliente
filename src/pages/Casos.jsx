@@ -7,7 +7,7 @@ function Casos() {
   
   return (
     <div className="metrics">
-      <Navbar name = "Casos"/>
+      <Navbar name = {<span className='nav-text'>Casos </span>}/>
       <div className="grid-one">
         <Caso/>
       </div>

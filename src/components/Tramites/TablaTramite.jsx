@@ -40,49 +40,46 @@ const App = () => {
 
   async function actualizarTablaT(){
     (async () => {
-      axios.get('http://localhost:3977/api/v1/tramites/getAll')
+      axios.get('http://localhost:3977/api/v1/tramites/getByIdOrg/'+cookies.get('organizacion_id'))
       .then(({data}) => {
 
         for(let i = 0; i < data.user.length; i++){   
-            const newStudent = {
+
+            const newTramite = {
             key: i,
             id: data.user[i]._id,
             tramite: data.user[i].tipo_tra,
+            nombreDepartamento: "",
             departamento: data.user[i].departamento_id,
             descripcion: data.user[i].descripcion_tra,
-            editarTramite: <button className='button-37' onClick={() => editarTramite(newStudent.id,newStudent.departamento)}></button>,
+            editarTramite: <button className='button-37' onClick={() => editarTramite(newTramite.id,newTramite.departamento)}></button>,
             };
-            setDataSource((pre) => {
-              return [...pre, newStudent];
-            });
+
+            nombreDepartamento(newTramite);
         }
 
   
       }).catch(({response}) => {
-
-  if(response.status == "500"){
-    Swal.fire({
-      title: 'Organizacion o correo ingresado ya existentes',
-      icon: 'warning',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar'
-      }).then((result) => {
-      
       })
-  }else if(response.status == "500"){
-    Swal.fire({
-      title: 'Se produjo un error',
-      icon: 'warning',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar'
-      }).then((result) => {
-      
-      })
-  }
-})
     })();
+}
+
+async function nombreDepartamento(newTramite){
+
+  (async () => {
+
+    axios.get('http://localhost:3977/api/v1/departamento/obtener/'+newTramite.departamento)
+    .then(({data}) => {
+
+      newTramite.nombreDepartamento = data.user.nombre_dep;
+
+      setDataSource((pre) => {
+        return [...pre, newTramite];
+      });
+
+    }).catch(({response}) => {
+    })
+  })();
 
 }
 
@@ -188,9 +185,7 @@ const App = () => {
       dataIndex: 'tramite',
       key: 'tramite',
       width: '30%',
-      ...getColumnSearchProps('tramite'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('tramite')
     },
     {
       title: 'Descripcion',
@@ -200,8 +195,8 @@ const App = () => {
     },
     {
       title: 'Departamento',
-      dataIndex: 'departamento',
-      key: 'departamento',
+      dataIndex: 'nombreDepartamento',
+      key: 'nombreDepartamento',
       width: '20%',
     },
     {

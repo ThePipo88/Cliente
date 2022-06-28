@@ -41,44 +41,46 @@ const App = () => {
         axios.get('http://localhost:3977/api/v1/tramites/obtener/'+cookies.get('ideTramite'))
         .then(({data}) => {
           for(let i = 0; i < data.user.ciclo_tra.length; i++){   
-              const newStudent = {
+              const newDep = {
               key: i,
-              departamento: data.user.ciclo_tra[i].nombre_departamento,
-              aprobado:data.user.ciclo_tra[i].estado_cic,
+              departamento: data.user.ciclo_tra[i].id_departamento,
+              aprobado: getAprobacion(data.user.ciclo_tra[i].estado_cic),
               accion: <button className='button-37' onClick={() => editarCiclo()}></button>,
               };
-              setDataSource((pre) => {
-                return [...pre, newStudent];
-              });
+
+              nombreDepartamento(newDep);
           }
   
     
         }).catch(({response}) => {
   
-    if(response.status == "500"){
-      Swal.fire({
-        title: 'Organizacion o correo ingresado ya existentes',
-        icon: 'warning',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar'
-        }).then((result) => {
-        
-        })
-    }else if(response.status == "500"){
-      Swal.fire({
-        title: 'Se produjo un error',
-        icon: 'warning',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar'
-        }).then((result) => {
-        
-        })
-    }
   })
       })();
   
+  }
+
+  function getAprobacion(estado){
+    if(estado){
+      return("Aprobado");
+    }else{
+      return("No aprobado");
+    }
+  }
+
+  function nombreDepartamento(newDep){
+
+    axios.get('http://localhost:3977/api/v1/departamento/obtener/'+newDep.departamento)
+        .then(({data}) => {
+
+          newDep.departamento = data.user.nombre_dep;
+
+          setDataSource((pre) => {
+            return [...pre, newDep];
+          });
+    
+        }).catch(({response}) => {
+  
+  })
   }
   
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -183,22 +185,14 @@ const App = () => {
         dataIndex: 'departamento',
         key: 'departamento',
         width: '50%',
-        ...getColumnSearchProps('departamento'),
-        sorter: (a, b) => a.address.length - b.address.length,
-        sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Aprobado',
+        title: 'Estado',
         dataIndex: 'aprobado',
         key: 'aprobado',
         width: '30%',
         ...getColumnSearchProps('aprobado'),
-      },
-      {
-        title: 'Accion',
-        dataIndex: 'accion',
-        key: 'accion',
-      },
+      }
     ];
     return <Table columns={columns} dataSource={dataSource} />;
   };

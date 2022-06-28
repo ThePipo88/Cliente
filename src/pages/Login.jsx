@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from "react-router-dom";
 import { Grid, Container, Paper, Avatar, Typography, TextField, Button, CssBaseline } from '@material-ui/core'
 import { Layout, Tabs } from "antd";
-import fondo from '../assets/fondo.png';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
 import Swal from 'sweetalert2';
 import axios from "axios";
