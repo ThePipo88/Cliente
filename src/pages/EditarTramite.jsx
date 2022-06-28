@@ -22,7 +22,6 @@ const { Option } = Select;
 function EditarTramite(props){
     const location = useLocation();
     const data = location.state;
-    console.log(data.myData.name);
 
     const [showAlert, setShowAlert] = useState(false);
     const nombre = "Tramites > "+ data.myData.name;
