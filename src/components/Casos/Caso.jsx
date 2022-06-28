@@ -1,6 +1,5 @@
 import React from "react";
 import { ResponsiveContainer } from "recharts";
-import TableCasos  from "./TableCasos";
 import TableCaso  from "../Casos/TableCasos";
 import CrearCaso  from "../Casos/CrearCaso";
 

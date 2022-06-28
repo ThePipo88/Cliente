@@ -3,53 +3,62 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import SubirArchivo from "./SubirArchivo";
+import Swal from 'sweetalert2';
+import axios from "axios";
 import 'antd/dist/antd.min.css';
 
-const App = () => {
+const App = (props) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
-  const navigate = useNavigate();
+  const {id_c} = props;
 
-  const [datos, setDatos] = useState([
+  const consultaTraking = () => {
+    
+  }
 
-  ]);
-
-  const consultaTraking = (id) => {
-
-    const myData = {
-      id_cons: id
+  function getEstado(estado){
+    if(estado){
+        return "Subido";
+    }else{
+        return "No subido";
     }
+  }
 
-    navigate("/admin/consulta/verconsulta", {state:{myData}});
+  function cargarArchivo(url){
+    var win = window.open(url, '_blank');
+// Cambiar el foco al nuevo tab (punto opcional)
+    win.focus();
   }
 
   useEffect(() => {
     return () => {
         (async () => {
+            console.log(id_c);
 
-            axios.get('http://localhost:3977/api/v1/casos/obtener/')
+            axios.get('http://localhost:3977/api/v1/documentos/finByNumCaso/'+id_c)
             .then(({data}) => {
-              
-              for(var i = 0; i < data.user.length; i++){
 
-                const nId = data.user[i]._id;
+                console.log(data);
 
+                for(let i = 0; i < data.user.length; i++){  
                 const newDocumento = {
                   key: i,
-                  id: nId,
-                  nombreCaso: data.user[i].nombre_caso,
-                  departamento: data.user[i].id_departamento,
-                  numeroCaso: data.user[i].nume_cas,
-                  consultaTraking: <button className='button-33' onClick={() => consultaTraking(nId)} ></button>
+                  id: data.user[i]._id,
+                  nombre: data.user[i].nombre_doc,
+                  estado: getEstado(data.user[i].estado_doc),
+                  tipo: data.user[i].tipo_documento,
+                  accion: <div><SubirArchivo id={data.user[i]._id}/><button className='button-archivo' style={{marginLeft: "2%"}} onClick={() => cargarArchivo(data.user[i].url_doc)}>Abrir</button></div>,
                   };     
 
-                  getNombreDepartamento(newDocumento);
-
+                  setDatos((pre) => {
+                    return [...pre, newDocumento];
+                  });
               }
-
+               
+              
             }).catch(({response}) => {
       
       })
@@ -57,24 +66,13 @@ const App = () => {
     }
   },[]);
 
+  const data = [
+   
+  ];
 
-  function getNombreDepartamento(newContact){
+  const [datos, setDatos] = useState([
 
-    axios.get('http://localhost:3977/api/v1/departamento/obtener/'+newContact.departamento)
-            .then(({data}) => {
-              
-              newContact.departamento = data.user.nombre_dep;
-
-                  setDatos((pre) => {
-                    return [...pre, newContact];
-                  });
-
-            }).catch(({response}) => {
-      
-      })
-    
-  }
-
+  ]);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -174,30 +172,30 @@ const App = () => {
 
   const columns = [
     {
-      title: 'Caso',
-      dataIndex: 'nombreCaso',
-      key: 'caso',
+      title: 'Nombre documento',
+      dataIndex: 'nombre',
+      key: 'nombre',
       width: '40%',
       ...getColumnSearchProps('caso'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Departamento',
-      dataIndex: 'departamento',
-      key: 'departamento',
-      width: '25%',
+      title: 'Estado',
+      dataIndex: 'estado',
+      key: 'estado',
+      width: '15%',
     },
     {
-      title: 'Numero Caso',
-      dataIndex: 'numeroCaso',
-      key: 'numero caso',
-      width: '20%',
+      title: 'Tipo',
+      dataIndex: 'tipo',
+      key: 'tipo',
+      width: '18%',
     },
     {
-      title: 'Consulta Tracking',
-      dataIndex: 'consultaTraking',
-      key: 'consulta tracking',
+      title: 'Accion',
+      dataIndex: 'accion',
+      key: 'accion',
     },
   ];
   return <Table columns={columns} dataSource={datos} />;

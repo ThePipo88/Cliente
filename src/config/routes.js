@@ -16,6 +16,7 @@ import RegisterForm from "../components/Login/RegisterForm";
 import EditarTramites from "../pages/EditarTramite";
 import VerConsulta from "../pages/VerConsulta";
 import CrearDocumento from "../components/Tramites/CrearDocumento"
+import GestionarDocumento from "../pages/SubirArchivos.jsx";
 //Ver porque no sirve la ruto de tramites por departamento
 
 const routesAdmin = [
@@ -79,6 +80,11 @@ const routesAdmin = [
         path: "/admin/tramites/adddocumento",
         layout: LayoutAdmin,
         component: CrearDocumento,
+    },
+    {
+        path: "/admin/casos/gestionar",
+        layout: LayoutAdmin,
+        component: GestionarDocumento,
     }
 ];
 

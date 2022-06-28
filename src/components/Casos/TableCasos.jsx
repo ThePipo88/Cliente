@@ -22,8 +22,12 @@ const App = () => {
   const navigate = useNavigate();
 
 
-  const editarDepartamento = (id, nombre) => {
-    
+  const editarDepartamento = (id, nombreCaso) => {
+    const myData = {
+      id_cons: id,
+      nombre: nombreCaso
+    }
+    navigate("/admin/casos/gestionar", {state:{myData}});
   }
 
   const [dataSource, setDataSource] = useState([
@@ -71,7 +75,7 @@ const App = () => {
             departamento: '',
             tramite: data.user[i].id_tramite,
             caso: data.user[i].nombre_caso,
-            editar: <button className='button-37' onClick={() => editarDepartamento()}></button>,
+            editar: <button className='button-37' onClick={() => editarDepartamento(data.user[i]._id, data.user[i].nombre_caso)}></button>,
             };
 
             getNombreDep(data.user[i].id_departamento, newCaso);

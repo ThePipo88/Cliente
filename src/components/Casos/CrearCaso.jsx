@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Input, Form, Select, DatePicker  } from 'antd';
-import { UserOutlined, AuditOutlined, BankOutlined, PhoneOutlined, CommentOutlined} from '@ant-design/icons';
+import {  CommentOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import Swal from 'sweetalert2';
 import swal from 'sweetalert';
@@ -37,6 +37,8 @@ const App = ({mostrar}) => {
 
   const [tram, setTram] = useState('');
 
+  const [IdCaso, setIdCaso] = useState('');
+
   useEffect(() => {
     return () => {
       axios.get('http://localhost:3977/api/v1/departamento/getByIdOrg/'+ cookies.get('organizacion_id'))
@@ -56,15 +58,7 @@ const App = ({mostrar}) => {
       setDepartamentos(newArr);
   
       }).catch(({response}) => {
-            Swal.fire({
-              title: 'Organizacion o correo ingresado ya existentes',
-              icon: 'warning',
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Aceptar'
-              }).then((result) => {
-              
-              })
+
         })
     }
   },[]);
@@ -78,7 +72,7 @@ const App = ({mostrar}) => {
   ]
 
 const onFinish = (values) => {
-
+var idCaso = "";
     const newCaso = {
         nombre_caso: caso,
         fecApertura_cas: new Date(),
@@ -93,6 +87,35 @@ const onFinish = (values) => {
 
     axios.post('http://localhost:3977/api/v1/casos/registrar/caso', newCaso)
       .then(({data}) => {
+
+        console.log(data.user._id);
+        idCaso = data.user._id;
+
+        axios.get('http://localhost:3977/api/v1/tramites/obtener/'+tram)
+      .then(({data}) => {
+
+        for(var i = 0; i < data.user.documentos.length; i++){
+
+          const newDocumento = {
+            nombre_doc: data.user.documentos[i].nombre_documento,
+            url_doc: "",
+            estado_doc: false,
+            tipo_documento: data.user.documentos[i].tipo_documento,
+            id_tramite: tram,
+            id_caso: idCaso
+            }
+
+          axios.post('http://localhost:3977/api/v1/documentos/registrar/documento',newDocumento)
+          .then(({data}) => {
+          }).catch(({response}) => {
+           
+           })
+
+        }
+
+      }).catch(({response}) => {
+           
+        })
 
         Swal.fire({
             title: 'Caso registrado con exito',
