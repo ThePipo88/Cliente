@@ -22,6 +22,12 @@ const App = (mostrar) => {
 
     const [departamentoAsinar, setDepartamentoAginar] = useState('');
 
+    const [nombreDep, setNombreDep] = useState('');
+
+    const [idDep, setIdDep] = useState('');
+
+    const [estadoCiclo, setEstadoCiclo] = useState('');
+
     const [nombreDoc, setNombreDoc] = useState('');
 
     const [descripcionDoc, setDesdoc] = useState('');
@@ -33,12 +39,11 @@ const App = (mostrar) => {
     const [dep, setDep] = useState([
 
     ]);
+    
     const data = location.state;
 
     const cookies = new Cookies();
 
-
- 
 
     useEffect(() => {
       return () => {
@@ -71,20 +76,28 @@ const App = (mostrar) => {
 
         const user = {
           tipo_tra: nombre,
-          departamento_id: departamentoAsinar,
-          descripcion_tra: descripcion,
-          documentos: [
-            {
-              nombre_documento: nombreDoc,
-              descripcion_documento: descripcionDoc,
-              estado_documento: estado,
-              tipo_documento: tipoArch
-            }
+          departamento_id: descripcion,
+          descripcion_tra: departamentoAsinar,
+          ciclo_tra:
+              [
+                  {
+                      nombre_departamento: nombreDep,
+                      id_departamento: idDep,
+                      estado_cic: true
+                  }
+              ],
+          documentos:
+          [
+              {
+                  nombre_documento: nombreDoc,
+                  descripcion_documento: descripcionDoc,
+                  estado_documento:true,
+                  tipo_documento: tipoArch
+              }
           ]
-        }
-    
+      }
         axios.post('http://localhost:3977/api/v1/tramites/registrartramites',user)
-                .then(({data}) => {
+        .then(({data}) => {
 
 
           setVisible(false);

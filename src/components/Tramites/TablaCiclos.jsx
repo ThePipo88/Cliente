@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import {Highlighter} from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import {useNavigate } from 'react-router-dom';
 import 'antd/dist/antd.min.css';
+import Swal from 'sweetalert2';
+import axios from "axios";
+import Cookies from "universal-cookie";
 
 
 const App = () => {
@@ -12,23 +15,71 @@ const App = () => {
     const searchInput = useRef(null);
   
     const navigate = useNavigate();
+
+    const cookies = new Cookies();
   
     const myData = {
       name: 'Ciclo'
     }
   
-    const editarDepartamento = () => {
-      navigate("/admin/departamentos/editar", {state:{myData}});
+    const editarCiclo = () => {
+      navigate("/admin/tramites/editarciclo", {state:{myData}});
     }
   
-    const data = [
-      {
-        key: '1',
-        departamento: 'Recursos Humanos',
-        aprobado: 'Si',
-        accion: <button className='button-37'></button>,
+    const [dataSource, setDataSource] = useState([
+
+    ]);
+  
+    useEffect(() => {
+      return () => {
+        actualizarTablaT();
       }
-    ];
+    },[]);
+  
+    async function actualizarTablaT(){
+      (async () => {
+        axios.get('http://localhost:3977/api/v1/tramites/obtener/'+cookies.get('ideTramite'))
+        .then(({data}) => {
+          for(let i = 0; i < data.user.ciclo_tra.length; i++){   
+              const newStudent = {
+              key: i,
+              departamento: data.user.ciclo_tra[i].nombre_departamento,
+              aprobado:data.user.ciclo_tra[i].estado_cic,
+              accion: <button className='button-37' onClick={() => editarCiclo()}></button>,
+              };
+              setDataSource((pre) => {
+                return [...pre, newStudent];
+              });
+          }
+  
+    
+        }).catch(({response}) => {
+  
+    if(response.status == "500"){
+      Swal.fire({
+        title: 'Organizacion o correo ingresado ya existentes',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+        }).then((result) => {
+        
+        })
+    }else if(response.status == "500"){
+      Swal.fire({
+        title: 'Se produjo un error',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+        }).then((result) => {
+        
+        })
+    }
+  })
+      })();
+  
+  }
   
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
       confirm();
@@ -149,7 +200,7 @@ const App = () => {
         key: 'accion',
       },
     ];
-    return <Table columns={columns} dataSource={data} />;
+    return <Table columns={columns} dataSource={dataSource} />;
   };
   
   export default App;

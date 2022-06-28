@@ -13,6 +13,8 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import CrearTramite from "../components/Tramites/CrearTramite";
 import CrearDocumento from "../components/Tramites/CrearDocumento";
+import EditarCiclo from './EditarCiclo';
+import CrearCiclo from "../components/Tramites/CrearCiclo"
 
 
 const { Option } = Select;
@@ -267,7 +269,9 @@ function EditarTramite(props){
             <div className="grid-users">
                 <div className="bootom__users">
                 <h3>Ciclo</h3>
-                <div style={{padding: "15px"}}>
+                <div className="container_button">
+                    <CrearCiclo mostrar={mostrarSms}/>
+                </div>
                 <Select
                     defaultValue="1"
                     style={{
@@ -280,11 +284,6 @@ function EditarTramite(props){
                     <Option value="3">3</Option>
                     <Option value="4">4</Option>
                 </Select>
-                <button type="primary" className="button-62" style={{backgroundColor: '#983ADE', color:"White",border:'#983ADE', borderRadius: "4px",fontSize: "15px"}}>
-                    Agregar  
-                </button>
-                </div>
-                
                 <ResponsiveContainer width="100%" height="100%">
                 <div className="container_table">
                     <TablaCiclos/>

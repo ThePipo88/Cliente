@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Modal, Button, Input, Form, Alert, Select  } from 'antd';
+import { Modal, Button, Input, Form, Alert, Select, Switch  } from 'antd';
 import { useLocation } from 'react-router-dom';
 import {ContainerOutlined,AlignCenterOutlined, HomeOutlined} from '@ant-design/icons';
 import { message } from 'antd';
@@ -21,6 +21,10 @@ const App = (mostrar) => {
 
     const[tipoArchivo, setTipoArchivo] = useState('');
 
+    const [documentoA, setDocumentoA] = useState([
+
+    ]);
+
     const data = location.state;
 
     const cookies = new Cookies();
@@ -33,6 +37,13 @@ const App = (mostrar) => {
         setVisible(false);
     }
 
+    const onChange = (checked) => {
+      if(checked){
+        setEstado(true);
+      }else{
+        setEstado(false);
+      }
+    };
 
   
     const onSearch = (value) => {
@@ -43,7 +54,8 @@ const App = (mostrar) => {
        
           const user = {
               
-            documentos:[
+            documentos:
+            [
                 {
                     nombre_documento: documento,
                     descripcion_documento: descripcion,
@@ -52,8 +64,17 @@ const App = (mostrar) => {
                 }
             ]
           }
-      
-          axios.put('http://localhost:3977/api/v1/tramites/actualizar/'+cookies.get('ideTramite'),user)
+
+          axios.get('http://localhost:3977/api/v1/tramites/obtener/'+cookies.get('ideTramite'))
+          .then(({data}) =>{
+            const user = {
+                      nombre_documento: documento,
+                      descripcion_documento: descripcion,
+                      estado_documento: estado,
+                      tipo_documento:tipoArchivo     
+            }
+            data.user.documentos.push(user);
+            axios.put('http://localhost:3977/api/v1/tramites/actualizar/'+cookies.get('ideTramite'),data.user)
                   .then(({data}) => {
             setVisible(false);
             form.resetFields();
@@ -90,7 +111,12 @@ const App = (mostrar) => {
                   })
               }
             })
-       
+            /*
+            data.user.documentos.push(user);
+            console.log(data.user.documentos);*/
+
+          }
+          )       
     };
 
     return(
@@ -155,7 +181,7 @@ const App = (mostrar) => {
           },
         ]}
       >
-        <Input size="large" placeholder="Estado" onChange={(e) => setEstado(e.target.value)} prefix={<AlignCenterOutlined />} />
+        <Switch defaultChecked onChange={onChange}/>
       </Form.Item>
       <Form.Item
         name="tipoArchivo"
