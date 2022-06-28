@@ -18,7 +18,7 @@ const App = ({idU, nombreU, apellidosU, cedulaU, fechaU, puestoU}) => {
     form.resetFields();
     setVisible(false);
   }
-
+  
   const cookies = new Cookies();
 
   const { Option } = Select;

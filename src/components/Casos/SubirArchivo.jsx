@@ -64,7 +64,6 @@ const App = (props) => {
     axios.get('http://localhost:3977/api/v1/documentos/finById/'+id)
       .then(({data}) => {
 
-
         const updateDocument = {
             nombre_doc: data.user.nombre_doc,
             url_doc: a.url,
@@ -126,7 +125,7 @@ const App = (props) => {
     >
 
       <Form.Item >
-      <input type="file" accept="application/pdf" id="customFile" onChange={(e) => guardarArchivo(e)} />
+      <input type="file" accept="application" id="customFile" onChange={(e) => guardarArchivo(e)} />
         </Form.Item>  
 
         <Form.Item >
