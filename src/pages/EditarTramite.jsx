@@ -74,7 +74,7 @@ function EditarTramite(props){
           
                   body.nombreT = data.user.tipo_tra;
                   body.descripcion = data.user.descripcion_tra;
-                  //body.departamnetoAsig = data.user.departamento_id;
+                  body.departamnetoAsig = data.user.departamento_id;
                   setNombreTra(body.nombreT);
                 }).catch(({response}) => {
           
@@ -91,6 +91,11 @@ function EditarTramite(props){
                       key: i,
                       nombre: data.user[i].nombre_dep,
                       };
+
+                      if(body.departamnetoAsig == data.user[i]._id){
+                        body.departamnetoAsig = data.user[i].nombre_dep;
+                      }
+
                       setDep((pre) => {
                         return [...pre, newDep];
                       });
@@ -142,7 +147,7 @@ function EditarTramite(props){
 
 
     const cargarForm = () => {
-        form.setFieldsValue({nombreT: body.nombreT, descripcion: body.descripcion, departamnetoAsig: body.departamnetoAsig});
+        form.setFieldsValue({nombreT: body.nombreT, descripcion: body.descripcion, departamentoAsinar: body.departamnetoAsig});
     }
         
     const actualizarTramite1 = (values) => {
